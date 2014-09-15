@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,29 +14,34 @@ namespace RecepiesApp.Models
         {
             this.Tags = new HashSet<Tag>();
             this.CommentsOnRecepies = new HashSet<RecepieComment>();
+            this.RecepiePhases = new HashSet<RecepiePhase>();
         }
         
-        //TODO: decide on the type of the Id - Guid or int
         public virtual int Id { get; set; }
-
-        // innerHTML or Plain text
+        
+        [Required]
         public virtual string Description { get; set; }
         
-        // TODO: - Decide how to store pictures
-        // innerHTML or Plain text
-        public virtual object Picture { get; set; }
+        public virtual string PictureUrl { get; set; }
         
-        //should have index
+        [Index]
+        [Required]
         public virtual DateTime Date { get; set; }
         
-        public virtual UserInfo UserInfoBy { get; set; }
-        
-        //should have index
+        [Index]
+        [Required]
         public virtual int UserInfoId { get; set; }
+
+        public virtual UserInfo UserInfo { get; set; }
         
-        //should have index
         public virtual ICollection<Tag> Tags { get; set; }
         
         public virtual ICollection<RecepieComment> CommentsOnRecepies { get; set; }
+
+        public virtual ICollection<RecepiePhase> RecepiePhases { get; set; }
+        
+        [Index]
+        [Required]
+        public virtual bool IsDeleted { get; set; }
     }
 }

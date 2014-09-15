@@ -1,25 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RecepiesApp.Models
 {
-    class Tag
+    public class Tag
     {
         public Tag() 
         {
             this.Recepies = new HashSet<Recepie>();
         }
         
-        //TODO: decide on the type of the Id - Guid or int
         public virtual int Id { get; set; }
 
-        //should have index
-        //should be unique
+        [Required]
+        [Index(IsUnique=true)]
+        [MaxLength(50)]
         public virtual string Name { get; set; }
         
         public virtual ICollection<Recepie> Recepies { get; set; }
+        
+        [Index]
+        [Required]
+        public virtual bool IsDeleted { get; set; }
     }
 }

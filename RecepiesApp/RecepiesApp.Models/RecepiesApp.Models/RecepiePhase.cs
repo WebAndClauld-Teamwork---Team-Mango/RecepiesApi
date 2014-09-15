@@ -7,12 +7,19 @@ using System.Text;
 
 namespace RecepiesApp.Models
 {
-    public class RecepieComment
+    public class RecepiePhase
     {
         public virtual int Id { get; set; }
         
         [Required]
-        public virtual string Content { get; set; }
+        public virtual int NumberOfPhase { get; set; }
+        
+        [Required]
+        [MaxLength(50)]
+        public virtual string Name { get; set; }
+        
+        [Required]
+        public virtual int Minutes { get; set; }
         
         [Index]
         [Required]
@@ -20,12 +27,10 @@ namespace RecepiesApp.Models
 
         public virtual Recepie Recepie { get; set; }
         
-        [Index]
+        //default is False
         [Required]
-        public virtual int UserInfoId { get; set; }
-
-        public virtual UserInfo UserInfo { get; set; }
-
+        public virtual bool IsImportnt { get; set; }
+        
         [Index]
         [Required]
         public virtual bool IsDeleted { get; set; }
