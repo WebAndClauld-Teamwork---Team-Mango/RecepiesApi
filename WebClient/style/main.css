@@ -113,7 +113,50 @@ footer {
 /* RECIPE */
 #content-box article {
     float: right;
-    width: 500px;
+    width: 510px;
     border: 1px solid #000;
+    margin: 10px 10px 0 10px;
+    padding: 10px;
 }
+
+#content-box article h3 {
+    border-bottom: 1px solid #000;
+    padding-bottom: 10px;
+}
+
+#content-box aside {
+    width: 230px;
+    border: 1px solid #000;
+    float: left;
+    margin: 10px 0 0 10px;
+    padding: 10px;
+}
+
+#content-box aside .taglist {
+    background: lightgray;
+    margin: 10px 0;
+    padding: 10px 10px;
+}
+
+#content-box section {
+    margin: 0;
+    border: none;
+}
+#content-box section .comment-box {
+    width: 775px;
+    border: 1px solid #000;
+    margin: 10px;
+    padding: 10px 10px 0 10px ;
+}
+
+#recipe-text {
+    border-bottom: 1px solid #000;
+    padding-bottom: 10px;
+}
+
+#content-box section .comment-box:nth-child(even) {
+    background: lightgray;
+}
+
+
 /*RECIPE END*/
