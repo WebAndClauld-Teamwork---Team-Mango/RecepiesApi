@@ -87,9 +87,22 @@ section .recipe-thumbnail-box {
     padding: 10px;
 }
 
-section .recipe-thumbnail-box {
+section .recipe-thumbnail-box .time-consuming {
+    width: 60px;
+    height: 30px;
+    background: lightgray;
+    padding: 10px 0 0 12px;
+    float: left;
+    border: 1px solid gray;
+}
+
+section .recipe-thumbnail-box .btn-details {
+    width: 50%;
+    height: 40px;
+    margin: 0 0 0 35px;
 
 }
+
 
 footer {
     border-top: 1px solid gray;
