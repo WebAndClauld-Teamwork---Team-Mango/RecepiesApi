@@ -10,7 +10,7 @@ using RecepiesApp.Services.Models;
 
 namespace RecepiesApp.Services.Controllers
 {
-    public class RecepiesController : ApiController, IRepositoryHandler<Recepie>
+    public class RecepiesController : ApiController, IRepositoryHandler<Recepie>, IController
     {
         public RecepiesController() 
         {
@@ -21,8 +21,9 @@ namespace RecepiesApp.Services.Controllers
         }
         private static IRepository<Recepie> repository;
 
-        // GET api/recepies
-        public HttpResponseMessage Get()
+        // GET api/recepies/all
+        [HttpGet]
+        public HttpResponseMessage All()
         {
             var results = this.Repository.All().Select(r => new RecepieLightModel()
                     {
@@ -35,8 +36,9 @@ namespace RecepiesApp.Services.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, results);
         }
 
-        // GET api/recepies/5
-        public HttpResponseMessage Get(int id)
+        // GET api/recepies/select/5
+        [HttpGet]
+        public HttpResponseMessage Select(int id)
         {
             var recepie = this.Repository.All().FirstOrDefault(u => u.Id == id);
 
@@ -92,16 +94,20 @@ namespace RecepiesApp.Services.Controllers
 	        }
         }
 
-        // POST api/recepies
-        public HttpResponseMessage Post([FromBody]Recepie value)
+        // POST api/recepies/add
+        [HttpPost]
+        public HttpResponseMessage Add([FromBody]
+                                       Recepie value)
         {
             this.Repository.Add(value);
             this.Repository.SaveChanges();
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        // PUT api/recepies/5
-        public HttpResponseMessage Put(int id, [FromBody]RecepieLightModel value)
+        // PUT api/recepies/edit/5
+        [HttpPut]
+        public HttpResponseMessage Edit(int id, [FromBody]
+                                        RecepieLightModel value)
         {
             var recepie = this.Repository.All().FirstOrDefault(u => u.Id == id);
             if (recepie != null)
@@ -115,7 +121,8 @@ namespace RecepiesApp.Services.Controllers
             }
         }
 
-        // DELETE api/recepies/5
+        // DELETE api/recepies/Delete/5
+        [HttpDelete]
         public HttpResponseMessage Delete(int id)
         {
             var recepie = this.Repository.All().FirstOrDefault(u => u.Id == id);
