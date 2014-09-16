@@ -30,6 +30,7 @@ namespace RecepiesApp.Services.Controllers
                         Id = r.Id,
                         Name = r.Name,
                         Date = r.Date,
+                        Description = r.Description,
                         PictureUrl = r.PictureUrl,
                         Nickname = r.UserInfo.Nickname
                     }).OrderBy(r => r.Date);
@@ -40,7 +41,9 @@ namespace RecepiesApp.Services.Controllers
         [HttpGet]
         public HttpResponseMessage Select(int id)
         {
-            var recepie = this.Repository.All().FirstOrDefault(u => u.Id == id);
+            var recepies = this.Repository.All();
+
+            var recepie = recepies.FirstOrDefault(u => u.Id == id);
 
             if (recepie != null)
             {

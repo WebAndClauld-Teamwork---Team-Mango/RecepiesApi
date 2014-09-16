@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 
 namespace RecepiesApp.Services.Models
 {
-    /// <summary>
-    /// One to One connected with Web API's User by the Id
-    /// </summary>
     public class UserInfoLightModel
     {
         public virtual int Id { get; set; }

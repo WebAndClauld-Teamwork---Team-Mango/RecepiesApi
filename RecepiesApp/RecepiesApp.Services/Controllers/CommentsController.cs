@@ -80,16 +80,25 @@ namespace RecepiesApp.Services.Controllers
         public HttpResponseMessage Select(int id)
         {
             var cpmment = this.Repository.All().FirstOrDefault(rc => rc.Id == id);
-            var result = new RecepieCommentModel()
+            
+            if (cpmment != null)
             {
-                Id = cpmment.Id,
-                Content = cpmment.Content,
-                RecepieId = cpmment.RecepieId,
-                Date = cpmment.Date,
-                Nickname = cpmment.UserInfo.Nickname,
-                UserInfoId = cpmment.UserInfoId
-            };
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+                var result = new RecepieCommentModel()
+                {
+                    Id = cpmment.Id,
+                    Content = cpmment.Content,
+                    RecepieId = cpmment.RecepieId,
+                    Date = cpmment.Date,
+                    Nickname = cpmment.UserInfo.Nickname,
+                    UserInfoId = cpmment.UserInfoId
+                };
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            else
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The comment was not found");
+            }
         }
 
         [HttpPost]
@@ -111,7 +120,7 @@ namespace RecepiesApp.Services.Controllers
             }
             else
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The recepie was not found");
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The comment was not found");
             }
         }
 
@@ -127,7 +136,7 @@ namespace RecepiesApp.Services.Controllers
             }
             else
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The recepie was not found");
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The comment was not found");
             }
         }
 

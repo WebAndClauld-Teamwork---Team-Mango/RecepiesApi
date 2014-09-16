@@ -57,6 +57,7 @@ namespace RecepiesApp.Services.Controllers
                         Id = r.Recepie.Id,
                         Name = r.Recepie.Name,
                         Date = r.Recepie.Date,
+                        Description = r.Recepie.Description,
                         PictureUrl = r.Recepie.PictureUrl,
                         Nickname = r.Recepie.UserInfo.Nickname
                     }).OrderBy(r => r.Name),
@@ -64,6 +65,7 @@ namespace RecepiesApp.Services.Controllers
                     {
                         Id = r.Id,
                         Date = r.Date,
+                        Description = r.Description,
                         PictureUrl = r.PictureUrl,
                         Nickname = user.Nickname
                     }).OrderBy(r => r.Date),

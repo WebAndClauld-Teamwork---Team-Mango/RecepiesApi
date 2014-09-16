@@ -28,7 +28,8 @@
         
         public IQueryable<T> All()
         {
-            return this.set.Where(item => item.IsDeleted != true);
+            var all = this.set.Where(item => item.IsDeleted != true);
+            return all;
         }
 
         public IQueryable<T> AllWithDeleted()
@@ -38,7 +39,7 @@
 
         public void Delete(T entity)
         {
-            this.ChangeEntityState(entity, EntityState.Deleted);
+            entity.IsDeleted = true;
         }
 
         public void Detach(T entity)
