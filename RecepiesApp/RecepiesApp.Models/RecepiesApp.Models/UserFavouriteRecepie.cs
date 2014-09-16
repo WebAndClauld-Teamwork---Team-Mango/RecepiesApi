@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RecepiesApp.Models
 {
-    public class UserFavouriteRecepie
+    public class UserFavouriteRecepie : MarkableAsDeleted
     {
         public virtual int Id { get; set; }
         
@@ -26,6 +26,6 @@ namespace RecepiesApp.Models
         
         [Index]
         [Required]
-        public virtual bool IsDeleted { get; set; }
+        public override bool IsDeleted { get; set; }
     }
 }

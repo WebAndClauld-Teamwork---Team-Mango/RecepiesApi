@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MarkableAsDeleted.cs" />
     <Compile Include="RecepiePhase.cs" />
     <Compile Include="Recepie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

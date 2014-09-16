@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,16 +10,16 @@ using RecepiesApp.Models;
 
 namespace RecepiesApp.Data
 {
-    public class RecepiesDbContext : DbContext
+    public class RecepiesDbContext : DbContext, IRecepiesDbContext
     {
         public RecepiesDbContext()
-            : this(ConnectionSettings.Default.RegularMSSQLConnectionString)
+            : this("Server=.;Database=RecepiesAppDatabase;Trusted_Connection=True;")
         {
         }
 
         public static RecepiesDbContext MsSqlExpressInstance()
         {
-            return new RecepiesDbContext(ConnectionSettings.Default.RegularMSSQLConnectionString);
+            return new RecepiesDbContext(@"Server=.\SQLEXPRESS;Database=RecepiesAppDatabase;Trusted_Connection=True;");
         }
 
         public RecepiesDbContext(string connectionString)
@@ -56,6 +57,21 @@ namespace RecepiesApp.Data
                 .WillCascadeOnDelete(false);
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        public new void SaveChanges()
+        {
+            this.SaveChanges();
+        }
+
+        DbSet<T> Set<T>() where T : class 
+        {
+            return base.Set<T>();
+        }
+
+        DbEntityEntry<T> Entry<T>(T entity) where T : class
+        {
+            return base.Entry<T>(entity);
         }
     }
 }

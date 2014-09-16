@@ -7,12 +7,16 @@ using System.Text;
 
 namespace RecepiesApp.Models
 {
-    public class RecepieComment
+    public class RecepieComment : MarkableAsDeleted
     {
         public virtual int Id { get; set; }
         
         [Required]
         public virtual string Content { get; set; }
+
+        [Index]
+        [Required]
+        public virtual DateTime Date { get; set; }
         
         [Index]
         [Required]
@@ -28,6 +32,6 @@ namespace RecepiesApp.Models
 
         [Index]
         [Required]
-        public virtual bool IsDeleted { get; set; }
+        public override bool IsDeleted { get; set; }
     }
 }

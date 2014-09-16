@@ -7,7 +7,7 @@ using System.Text;
 
 namespace RecepiesApp.Models
 {
-    public class RecepiePhase
+    public class RecepiePhase : MarkableAsDeleted
     {
         public virtual int Id { get; set; }
         
@@ -33,6 +33,6 @@ namespace RecepiesApp.Models
         
         [Index]
         [Required]
-        public virtual bool IsDeleted { get; set; }
+        public override bool IsDeleted { get; set; }
     }
 }

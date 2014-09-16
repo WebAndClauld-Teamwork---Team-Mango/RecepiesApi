@@ -8,16 +8,20 @@ using System.Threading.Tasks;
 
 namespace RecepiesApp.Models
 {
-    public class Recepie
+    public class Recepie : MarkableAsDeleted
     {
         public Recepie() 
         {
             this.Tags = new HashSet<Tag>();
-            this.CommentsOnRecepies = new HashSet<RecepieComment>();
-            this.RecepiePhases = new HashSet<RecepiePhase>();
+            this.Comments = new HashSet<RecepieComment>();
+            this.Phases = new HashSet<RecepiePhase>();
+            this.UsersFavouritedThisRecepie = new HashSet<UserFavouriteRecepie>();
         }
         
         public virtual int Id { get; set; }
+        
+        [Required]
+        public virtual string Name { get; set; }
         
         [Required]
         public virtual string Description { get; set; }
@@ -36,12 +40,14 @@ namespace RecepiesApp.Models
         
         public virtual ICollection<Tag> Tags { get; set; }
         
-        public virtual ICollection<RecepieComment> CommentsOnRecepies { get; set; }
+        public virtual ICollection<RecepieComment> Comments { get; set; }
+        
+        public virtual ICollection<RecepiePhase> Phases { get; set; }
 
-        public virtual ICollection<RecepiePhase> RecepiePhases { get; set; }
+        public virtual ICollection<UserFavouriteRecepie> UsersFavouritedThisRecepie { get; set; }
         
         [Index]
         [Required]
-        public virtual bool IsDeleted { get; set; }
+        public override bool IsDeleted { get; set; }
     }
 }

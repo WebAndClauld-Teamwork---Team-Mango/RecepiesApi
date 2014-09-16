@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RecepiesApp.Models
 {
-    public class Tag
+    public class Tag : MarkableAsDeleted
     {
         public Tag() 
         {
@@ -26,6 +26,6 @@ namespace RecepiesApp.Models
         
         [Index]
         [Required]
-        public virtual bool IsDeleted { get; set; }
+        public override bool IsDeleted { get; set; }
     }
 }

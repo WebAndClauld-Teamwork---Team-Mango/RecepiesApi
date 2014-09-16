@@ -11,7 +11,7 @@ namespace RecepiesApp.Models
     /// <summary>
     /// One to One connected with Web API's User by the Id
     /// </summary>
-    public class UserInfo
+    public class UserInfo : MarkableAsDeleted
     {
         public UserInfo() 
         {
@@ -39,6 +39,6 @@ namespace RecepiesApp.Models
         
         [Index]
         [Required]
-        public virtual bool IsDeleted { get; set; }
+        public override bool IsDeleted { get; set; }
     }
 }
