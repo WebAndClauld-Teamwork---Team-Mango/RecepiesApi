@@ -10,9 +10,10 @@ namespace RecepiesApp.Models
 {
     public class Tag : MarkableAsDeleted
     {
+        private ICollection<Recepie> recepies;
+
         public Tag() 
         {
-            this.Recepies = new HashSet<Recepie>();
         }
         
         public virtual int Id { get; set; }
@@ -21,8 +22,12 @@ namespace RecepiesApp.Models
         [Index(IsUnique=true)]
         [MaxLength(50)]
         public virtual string Name { get; set; }
-        
-        public virtual ICollection<Recepie> Recepies { get; set; }
+
+        public virtual ICollection<Recepie> Recepies 
+        { 
+            get { return this.recepies ?? new HashSet<Recepie>(); } 
+            set { this.recepies = value; } 
+        }
         
         [Index]
         [Required]
