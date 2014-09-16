@@ -1,0 +1,98 @@
+body {
+    font-family: Georgia;
+}
+
+#wrapper {
+    margin: 0 auto;
+    border: 1px solid gray;
+    width: 1024px;
+    height: auto;
+}
+
+header ul li {
+    float: left;
+    margin: 0 10px;
+    list-style: none;
+}
+
+header h1 {
+    margin: 20px 0 0 35px;
+}
+
+header #user-welcome-box {
+    float: right;
+    margin: 0 20px 0 0px;
+}
+
+aside {
+    float: left;
+    /*border: 1px solid #000;*/
+    height: 100%;
+}
+aside ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 175px;
+}
+aside ul li {
+    margin: 0;
+    padding: 0;
+}
+aside ul li button {
+    width: 80%;
+    cursor: pointer;
+    height: 35px;
+    margin: 10px 0 0 20px;
+}
+
+/* SECTION */
+section {
+    border: 1px solid #000;
+    height: 100%;
+    float: left;
+    width: 820px;
+    margin: 0 0 0 10px;
+}
+
+section #breadcrumbs-box {
+    width: 590px;
+    border: 1px solid #000;
+    float: left;
+    padding: 5px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+section #tb-search {
+    border: 1px solid #000;
+    float: left;
+    padding: 6px;
+    margin: 10px 0 0 14px;
+    height: 23px;
+}
+
+#content-box {
+    padding: 0 0 0 0px;
+}
+
+/* SECTION END*/
+
+section .recipe-thumbnail-box {
+    width: 231px;
+    border: 1px solid #000;
+    height: 380px;
+    float: left;
+    margin: 10px 5px 0 13px;
+    padding: 10px;
+}
+
+section .recipe-thumbnail-box {
+
+}
+
+footer {
+    border-top: 1px solid gray;
+    text-align: center;
+    padding: 20px;
+}
