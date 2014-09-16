@@ -10,10 +10,10 @@ namespace RecepiesApp.Services.Models
 {
     public class TagModel
     {
-        public TagModel() 
-        {
-            this.Recepies = new HashSet<RecepieLightModel>();
-        }
+        //public TagModel() 
+        //{
+        //    this.Recepies = new HashSet<RecepieLightModel>();
+        //}
         
         public virtual int Id { get; set; }
 

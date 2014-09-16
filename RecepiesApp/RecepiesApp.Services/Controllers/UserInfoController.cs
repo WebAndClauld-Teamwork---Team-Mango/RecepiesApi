@@ -11,7 +11,7 @@ using RecepiesApp.Services.Models;
 
 namespace RecepiesApp.Services.Controllers
 {
-    public class UserInfoController : ApiController, IRepositoryHandler<UserInfo>
+    public class UserInfoController : ApiController, IRepositoryHandler<UserInfo>, IController
     {
         public UserInfoController() 
         {
@@ -23,7 +23,8 @@ namespace RecepiesApp.Services.Controllers
 
         private static IRepository<UserInfo> repository;
         
-        public HttpResponseMessage Get()
+        [HttpGet]
+        public HttpResponseMessage All()
         {
             var users = this.Repository.All();
                 
@@ -38,8 +39,9 @@ namespace RecepiesApp.Services.Controllers
 
             return Request.CreateResponse(HttpStatusCode.OK, results);
         }
-
-        public HttpResponseMessage Get(int id)
+        
+        [HttpGet]
+        public HttpResponseMessage Select(int id)
         {
             var user = this.Repository.All().FirstOrDefault(u => u.Id == id);
             if (user != null)
@@ -55,6 +57,7 @@ namespace RecepiesApp.Services.Controllers
                         Id = r.Recepie.Id,
                         Name = r.Recepie.Name,
                         Date = r.Recepie.Date,
+                        Description = r.Recepie.Description,
                         PictureUrl = r.Recepie.PictureUrl,
                         Nickname = r.Recepie.UserInfo.Nickname
                     }).OrderBy(r => r.Name),
@@ -62,6 +65,7 @@ namespace RecepiesApp.Services.Controllers
                     {
                         Id = r.Id,
                         Date = r.Date,
+                        Description = r.Description,
                         PictureUrl = r.PictureUrl,
                         Nickname = user.Nickname
                     }).OrderBy(r => r.Date),
@@ -84,7 +88,8 @@ namespace RecepiesApp.Services.Controllers
         }
 
         // POST api/userinfo
-        public HttpResponseMessage Post([FromBody]UserInfo value)
+        [HttpPost]
+        public HttpResponseMessage Add([FromBody]UserInfo value)
         {
             this.Repository.Add(value);
             this.Repository.SaveChanges();
@@ -92,7 +97,8 @@ namespace RecepiesApp.Services.Controllers
         }
 
         // PUT api/userinfo/5
-        public HttpResponseMessage Put(int id, [FromBody]UserInfoLightModel value)
+        [HttpPut]
+        public HttpResponseMessage Edit(int id, [FromBody]UserInfoLightModel value)
         {
             var user = this.Repository.All().FirstOrDefault(u => u.Id == id);
             if (user != null)
@@ -107,6 +113,7 @@ namespace RecepiesApp.Services.Controllers
         }
 
         // DELETE api/userinfo/5
+        [HttpDelete]
         public HttpResponseMessage Delete(int id)
         {
             var user = this.Repository.All().FirstOrDefault(u => u.Id == id);

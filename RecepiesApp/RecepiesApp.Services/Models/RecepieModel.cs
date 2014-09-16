@@ -10,13 +10,13 @@ namespace RecepiesApp.Services.Models
 {
     public class RecepieModel
     {
-        public RecepieModel() 
-        {
-            this.Tags = new HashSet<TagModel>();
-            this.Comments = new HashSet<RecepieCommentModel>();
-            this.RecepiePhases = new HashSet<RecepiePhaseModel>();
-            this.UsersFavouritedThisRecepie = new HashSet<UserInfoLightModel>();
-        }
+        //public RecepieModel() 
+        //{
+        //    this.Tags = new HashSet<TagModel>();
+        //    this.Comments = new HashSet<RecepieCommentModel>();
+        //    this.RecepiePhases = new HashSet<RecepiePhaseModel>();
+        //    this.UsersFavouritedThisRecepie = new HashSet<UserInfoLightModel>();
+        //}
         
         public virtual int Id { get; set; }
         

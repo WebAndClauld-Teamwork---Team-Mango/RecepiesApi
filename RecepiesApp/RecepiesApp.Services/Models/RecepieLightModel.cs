@@ -10,11 +10,25 @@ namespace RecepiesApp.Services.Models
 {
     public class RecepieLightModel
     {
+        private string description;
+
         public virtual int Id { get; set; }
 
         public virtual string Name { get; set; }
         
         public virtual string PictureUrl { get; set; }
+
+        public virtual string Description 
+        {
+            get
+            {
+                return this.description;
+            }
+            set 
+            {
+                this.description = value.Substring(0, 100);
+            }
+        }
        
         public virtual DateTime Date { get; set; }
         
