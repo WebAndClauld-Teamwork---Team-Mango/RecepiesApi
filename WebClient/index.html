@@ -47,11 +47,12 @@
 <script id="recipes-template" type='text/x-handlebars-template'>
 	{{#recepies}}
 	<div class="recipe-thumbnail-box">
-		<img src="{{thumb_image}}" alt="{{name}}"/>
-		<strong>{{name}}</strong>
+		<img src="{{PictureUrl}}" alt="{{Name}}"/>
+		<strong>{{Name}}</strong>
 
-		<p>{{description}}</p>
-
+		<p>{{Description}}</p>
+		
+		<p><a href="#">{{Nickname}}</a> {{Date}}</p>
 		<div class="time-consuming">{{timeConsuming}}</div>
 		<a href="#/recipe/{{id}}"><button class="btn_details" >DETAILS</button></a>
 	</div>

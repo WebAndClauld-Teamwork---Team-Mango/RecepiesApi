@@ -32,7 +32,19 @@ define(['jquery', 'requestModule','recipesPersister','handlebars',], function ($
                 /*wrapper.on('click', '#btn-login', function () {
 
                 });*/
-            }
+            },
+			
+			generateSingleRecipe:function(data)
+			{
+				var recipeListContainer = $("#content-box");
+				var generateRecipe = Handlebars.compile($('#recipe-template').html());
+				// empty the container
+				while (recipeListContainer.firstChild) {
+					recipeListContainer.removeChild(recipeListContainer.firstChild);
+				}
+				
+				recipeListContainer.html(generateRecipe(data));
+			}
         };
 
         return RecipesController;
