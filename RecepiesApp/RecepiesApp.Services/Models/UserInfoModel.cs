@@ -28,11 +28,11 @@ namespace RecepiesApp.Services.Models
         
         public virtual string PictureUrl { get; set; }
         
-        public virtual IEnumerable<RecepieLightModel> Recepies { get; set; }
+        public IEnumerable<RecepieLightModel> Recepies { get; set; }
 
-        public virtual IEnumerable<RecepieLightModel> FavouriteRecepies { get; set; }
+        public IEnumerable<RecepieLightModel> FavouriteRecepies { get; set; }
 
-        public virtual IEnumerable<RecepieCommentModel> RecepieComments { get; set; }
+        public IEnumerable<RecepieCommentModel> RecepieComments { get; set; }
         
     }
 }

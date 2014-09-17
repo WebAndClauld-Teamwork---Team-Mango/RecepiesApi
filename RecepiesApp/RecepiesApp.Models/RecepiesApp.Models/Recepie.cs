@@ -38,13 +38,13 @@ namespace RecepiesApp.Models
 
         public virtual UserInfo UserInfo { get; set; }
         
-        public virtual ICollection<Tag> Tags { get; set; }
+        public /*virtual*/ ICollection<Tag> Tags { get; set; }
         
-        public virtual ICollection<RecepieComment> Comments { get; set; }
+        public /*virtual*/ ICollection<RecepieComment> Comments { get; set; }
         
-        public virtual ICollection<RecepiePhase> Phases { get; set; }
+        public /*virtual*/ ICollection<RecepiePhase> Phases { get; set; }
 
-        public virtual ICollection<UserFavouriteRecepie> UsersFavouritedThisRecepie { get; set; }
+        public /*virtual*/ ICollection<UserFavouriteRecepie> UsersFavouritedThisRecepie { get; set; }
         
         [Index]
         [Required]

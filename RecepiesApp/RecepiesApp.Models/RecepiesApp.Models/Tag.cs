@@ -23,7 +23,7 @@ namespace RecepiesApp.Models
         [MaxLength(50)]
         public virtual string Name { get; set; }
 
-        public virtual ICollection<Recepie> Recepies 
+        public /*virtual*/ ICollection<Recepie> Recepies 
         { 
             get { return this.recepies ?? new HashSet<Recepie>(); } 
             set { this.recepies = value; } 

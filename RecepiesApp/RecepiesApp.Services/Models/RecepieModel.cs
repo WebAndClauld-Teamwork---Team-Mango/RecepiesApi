@@ -30,12 +30,12 @@ namespace RecepiesApp.Services.Models
         
         public virtual UserInfoLightModel UserInfo { get; set; }
 
-        public virtual IEnumerable<TagModel> Tags { get; set; }
+        public IEnumerable<TagModel> Tags { get; set; }
         
-        public virtual IEnumerable<RecepieCommentModel> Comments { get; set; }
+        public IEnumerable<RecepieCommentModel> Comments { get; set; }
 
-        public virtual IEnumerable<RecepiePhaseModel> RecepiePhases { get; set; }
+        public IEnumerable<RecepiePhaseModel> RecepiePhases { get; set; }
 
-        public virtual IEnumerable<UserInfoLightModel> UsersFavouritedThisRecepie { get; set; }
+        public IEnumerable<UserInfoLightModel> UsersFavouritedThisRecepie { get; set; }
     }
 }

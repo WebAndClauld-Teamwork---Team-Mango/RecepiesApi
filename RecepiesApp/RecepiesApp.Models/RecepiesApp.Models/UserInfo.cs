@@ -31,11 +31,11 @@ namespace RecepiesApp.Models
         
         public virtual string PictureUrl { get; set; }
         
-        public virtual ICollection<Recepie> Recepies { get; set; }
+        public /*virtual*/ ICollection<Recepie> Recepies { get; set; }
 
-        public virtual ICollection<UserFavouriteRecepie> FavouriteRecepies { get; set; }
+        public /*virtual*/ ICollection<UserFavouriteRecepie> FavouriteRecepies { get; set; }
 
-        public virtual ICollection<RecepieComment> RecepieComments { get; set; }
+        public /*virtual*/ ICollection<RecepieComment> RecepieComments { get; set; }
         
         [Index]
         [Required]

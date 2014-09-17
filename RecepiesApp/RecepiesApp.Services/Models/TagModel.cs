@@ -26,6 +26,6 @@ namespace RecepiesApp.Services.Models
         /// <value>
         /// The recepies.
         /// </value>
-        public virtual IEnumerable<RecepieLightModel> Recepies { get; set; }
+        public IEnumerable<RecepieLightModel> Recepies { get; set; }
     }
 }
