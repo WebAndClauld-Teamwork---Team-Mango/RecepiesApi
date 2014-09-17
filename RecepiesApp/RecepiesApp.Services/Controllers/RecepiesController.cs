@@ -25,15 +25,7 @@ namespace RecepiesApp.Services.Controllers
         [HttpGet]
         public HttpResponseMessage All()
         {
-            var results = this.Repository.All().Select(r => new RecepieLightModel()
-                    {
-                        Id = r.Id,
-                        Name = r.Name,
-                        Date = r.Date,
-                        Description = r.Description,
-                        PictureUrl = r.PictureUrl,
-                        Nickname = r.UserInfo.Nickname
-                    }).OrderBy(r => r.Date);
+            var results = this.Repository.All().Select(RecepieLightModel.FromDbModel).OrderBy(r => r.Date);
             return Request.CreateResponse(HttpStatusCode.OK, results);
         }
 
@@ -60,34 +52,19 @@ namespace RecepiesApp.Services.Controllers
                         Nickname = recepie.UserInfo.Nickname,
                         PictureUrl = recepie.UserInfo.PictureUrl
                     },
-                    RecepiePhases = recepie.Phases.Select(ph => new RecepiePhaseModel()
-                    {
-                        Id = ph.Id,
-                        IsImportnt = ph.IsImportnt,
-                        Minutes = ph.Minutes,
-                        NumberOfPhase = ph.NumberOfPhase,
-                        Name = ph.Name
-                    }).OrderBy(ph => ph.NumberOfPhase),
-                    Tags = recepie.Tags.Select(t => new TagModel()
-                    {
-                        Id = t.Id,
-                        Name = t.Name
-                    }).OrderBy(t => t.Name),
-                    Comments = recepie.Comments.Select(c => new RecepieCommentModel()
-                    {
-                        Id = c.Id,
-                        Date = c.Date,
-                        Content = c.Content,
-                        RecepieId = recepie.Id,
-                        UserInfoId = c.UserInfoId,
-                        Nickname = c.UserInfo.Nickname
-                    }).OrderBy(c => c.Date),
-                    UsersFavouritedThisRecepie = recepie.UsersFavouritedThisRecepie.Select(fav => new UserInfoLightModel()
-                    {
-                        Id = fav.UserInfo.Id,
-                        Nickname = fav.UserInfo.Nickname,
-                        PictureUrl = fav.UserInfo.PictureUrl
-                    })
+                    RecepiePhases = recepie.Phases
+                        .Select(RecepiePhaseModel.FromDbModel.Compile())
+                        .OrderBy(ph => ph.NumberOfPhase),
+                    Tags = recepie.Tags
+                        .Select(TagModel.FromDbModel.Compile())
+                        .OrderBy(t => t.Name),
+                    Comments = recepie.Comments
+                        .Select(RecepieCommentModel.FromDbModel.Compile())
+                        .OrderBy(c => c.Date),
+                    UsersFavouritedThisRecepie = recepie.UsersFavouritedThisRecepie
+                        .Select(fav => fav.UserInfo)
+                        .Select(UserInfoLightModel.FromDbModel.Compile())
+                        .OrderBy(u => u.Nickname)
                 };
             return Request.CreateResponse(HttpStatusCode.OK, result);
             }

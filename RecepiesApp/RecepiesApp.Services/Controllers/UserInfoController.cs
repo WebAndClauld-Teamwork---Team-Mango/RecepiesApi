@@ -28,12 +28,7 @@ namespace RecepiesApp.Services.Controllers
         {
             var users = this.Repository.All();
                 
-            var results = users.Select(user => new UserInfoLightModel() 
-                {
-                    Id = user.Id,
-                    Nickname = user.Description,
-                    PictureUrl = user.PictureUrl
-                });
+            var results = users.Select(UserInfoLightModel.FromDbModel);
                 
             results = results.OrderBy(user => user.Nickname);
 
@@ -52,32 +47,16 @@ namespace RecepiesApp.Services.Controllers
                     Description = user.Description,
                     Nickname = user.Description,
                     PictureUrl = user.PictureUrl,
-                    FavouriteRecepies = user.FavouriteRecepies.Select(r => new RecepieLightModel()
-                    {
-                        Id = r.Recepie.Id,
-                        Name = r.Recepie.Name,
-                        Date = r.Recepie.Date,
-                        Description = r.Recepie.Description,
-                        PictureUrl = r.Recepie.PictureUrl,
-                        Nickname = r.Recepie.UserInfo.Nickname
-                    }).OrderBy(r => r.Name),
-                    Recepies = user.Recepies.Select(r => new RecepieLightModel()
-                    {
-                        Id = r.Id,
-                        Date = r.Date,
-                        Description = r.Description,
-                        PictureUrl = r.PictureUrl,
-                        Nickname = user.Nickname
-                    }).OrderBy(r => r.Date),
-                    RecepieComments = user.RecepieComments.Select(r => new RecepieCommentModel()
-                    {
-                        Id = r.Id,
-                        Date = r.Date,
-                        RecepieId = r.RecepieId,
-                        Content = r.Content,
-                        UserInfoId = user.Id,
-                        Nickname = user.Nickname
-                    }).OrderBy(c => c.Date)
+                    FavouriteRecepies = user.FavouriteRecepies
+                        .Select(f => f.Recepie)
+                        .Select(RecepieLightModel.FromDbModel.Compile())
+                        .OrderBy(r => r.Name),
+                    Recepies = user.Recepies
+                        .Select(RecepieLightModel.FromDbModel.Compile())
+                            .OrderBy(r => r.Date),
+                    RecepieComments = user.RecepieComments
+                        .Select(RecepieCommentModel.FromDbModel.Compile())
+                        .OrderBy(c => c.Date)
                 };
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }

@@ -27,15 +27,7 @@ namespace RecepiesApp.Services.Controllers
         {
             var comments = this.Repository.All();
                 
-            var results = comments.Select(rc => new RecepieCommentModel()
-            {
-                Id = rc.Id,
-                Content = rc.Content,
-                RecepieId = rc.RecepieId,
-                Date = rc.Date,
-                Nickname = rc.UserInfo.Nickname,
-                UserInfoId = rc.UserInfoId
-            });
+            var results = comments.Select(RecepieCommentModel.FromDbModel);
 
             return Request.CreateResponse(HttpStatusCode.OK, results);
         }
@@ -45,15 +37,7 @@ namespace RecepiesApp.Services.Controllers
         {
             var comments = this.Repository.All().Where(c => c.UserInfoId == userId);
                 
-            var results = comments.Select(rc => new RecepieCommentModel()
-            {
-                Id = rc.Id,
-                Content = rc.Content,
-                RecepieId = rc.RecepieId,
-                Date = rc.Date,
-                Nickname = rc.UserInfo.Nickname,
-                UserInfoId = rc.UserInfoId
-            });
+            var results = comments.Select(RecepieCommentModel.FromDbModel);
 
             return Request.CreateResponse(HttpStatusCode.OK, results);
         }
@@ -63,15 +47,7 @@ namespace RecepiesApp.Services.Controllers
         {
             var comments = this.Repository.All().Where(c => c.RecepieId == recepieId);
                 
-            var results = comments.Select(rc => new RecepieCommentModel()
-            {
-                Id = rc.Id,
-                Content = rc.Content,
-                RecepieId = rc.RecepieId,
-                Date = rc.Date,
-                Nickname = rc.UserInfo.Nickname,
-                UserInfoId = rc.UserInfoId
-            });
+            var results = comments.Select(RecepieCommentModel.FromDbModel);
 
             return Request.CreateResponse(HttpStatusCode.OK, results);
         }
@@ -79,21 +55,11 @@ namespace RecepiesApp.Services.Controllers
         [HttpGet]
         public HttpResponseMessage Select(int id)
         {
-            var cpmment = this.Repository.All().FirstOrDefault(rc => rc.Id == id);
+            var cpmment = this.Repository.All().Select(RecepieCommentModel.FromDbModel).FirstOrDefault(rc => rc.Id == id);
             
             if (cpmment != null)
             {
-                var result = new RecepieCommentModel()
-                {
-                    Id = cpmment.Id,
-                    Content = cpmment.Content,
-                    RecepieId = cpmment.RecepieId,
-                    Date = cpmment.Date,
-                    Nickname = cpmment.UserInfo.Nickname,
-                    UserInfoId = cpmment.UserInfoId
-                };
-
-                return Request.CreateResponse(HttpStatusCode.OK, result);
+                return Request.CreateResponse(HttpStatusCode.OK, cpmment);
             }
             else
             {

@@ -10,12 +10,17 @@ namespace RecepiesApp.Models
 {
     public class Recepie : MarkableAsDeleted
     {
+        private ICollection<RecepiePhase> phases;
+        private ICollection<RecepieComment> comments;
+        private ICollection<Tag> tags;
+        private ICollection<UserFavouriteRecepie> usersFavouritedThisRecepie;
+
         public Recepie() 
         {
-            this.Tags = new HashSet<Tag>();
-            this.Comments = new HashSet<RecepieComment>();
-            this.Phases = new HashSet<RecepiePhase>();
-            this.UsersFavouritedThisRecepie = new HashSet<UserFavouriteRecepie>();
+            this.tags = new HashSet<Tag>();
+            this.comments = new HashSet<RecepieComment>();
+            this.phases = new HashSet<RecepiePhase>();
+            this.usersFavouritedThisRecepie = new HashSet<UserFavouriteRecepie>();
         }
         
         public virtual int Id { get; set; }
@@ -38,13 +43,53 @@ namespace RecepiesApp.Models
 
         public virtual UserInfo UserInfo { get; set; }
         
-        public /*virtual*/ ICollection<Tag> Tags { get; set; }
+        public virtual ICollection<Tag> Tags
+        { 
+            get 
+            {
+                return this.tags;
+            } 
+            set 
+            {
+                this.tags = value;
+            }
+        }
         
-        public /*virtual*/ ICollection<RecepieComment> Comments { get; set; }
+        public virtual ICollection<RecepieComment> Comments
+        { 
+            get 
+            {
+                return this.comments;
+            } 
+            set 
+            {
+                this.comments = value;
+            }
+        }
         
-        public /*virtual*/ ICollection<RecepiePhase> Phases { get; set; }
+        public virtual ICollection<RecepiePhase> Phases 
+        { 
+            get 
+            {
+                return this.phases;
+            } 
+            set 
+            {
+                this.phases = value;
+            }
+        }
 
-        public /*virtual*/ ICollection<UserFavouriteRecepie> UsersFavouritedThisRecepie { get; set; }
+        public virtual ICollection<UserFavouriteRecepie> UsersFavouritedThisRecepie
+        { 
+            get 
+            {
+                return this.usersFavouritedThisRecepie;
+            } 
+            set 
+            {
+                this.usersFavouritedThisRecepie = value;
+            }
+        }
         
         [Index]
         [Required]

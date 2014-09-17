@@ -13,11 +13,15 @@ namespace RecepiesApp.Models
     /// </summary>
     public class UserInfo : MarkableAsDeleted
     {
+        private ICollection<Recepie> recepies;
+        private ICollection<UserFavouriteRecepie> favouriteRecepies;
+        private ICollection<RecepieComment> recepieComments;
+
         public UserInfo() 
         {
-            this.Recepies = new HashSet<Recepie>();
-            this.FavouriteRecepies = new HashSet<UserFavouriteRecepie>();
-            this.RecepieComments = new HashSet<RecepieComment>();
+            this.recepies = new HashSet<Recepie>();
+            this.favouriteRecepies = new HashSet<UserFavouriteRecepie>();
+            this.recepieComments = new HashSet<RecepieComment>();
         }
         
         public virtual int Id { get; set; }
@@ -30,12 +34,42 @@ namespace RecepiesApp.Models
         public virtual string Description { get; set; }
         
         public virtual string PictureUrl { get; set; }
-        
-        public /*virtual*/ ICollection<Recepie> Recepies { get; set; }
 
-        public /*virtual*/ ICollection<UserFavouriteRecepie> FavouriteRecepies { get; set; }
+        public virtual ICollection<Recepie> Recepies
+        { 
+            get 
+            {
+                return this.recepies;
+            } 
+            set 
+            {
+                this.recepies = value;
+            }
+        }
 
-        public /*virtual*/ ICollection<RecepieComment> RecepieComments { get; set; }
+        public virtual ICollection<UserFavouriteRecepie> FavouriteRecepies
+        { 
+            get 
+            {
+                return this.favouriteRecepies;
+            } 
+            set 
+            {
+                this.favouriteRecepies = value;
+            }
+        }
+
+        public virtual ICollection<RecepieComment> RecepieComments 
+        { 
+            get 
+            {
+                return this.recepieComments;
+            } 
+            set 
+            {
+                this.recepieComments = value;
+            }
+        }
         
         [Index]
         [Required]

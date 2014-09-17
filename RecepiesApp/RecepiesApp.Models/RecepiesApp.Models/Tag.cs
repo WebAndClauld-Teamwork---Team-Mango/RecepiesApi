@@ -14,6 +14,7 @@ namespace RecepiesApp.Models
 
         public Tag() 
         {
+            this.recepies = new HashSet<Recepie>();
         }
         
         public virtual int Id { get; set; }
@@ -23,9 +24,9 @@ namespace RecepiesApp.Models
         [MaxLength(50)]
         public virtual string Name { get; set; }
 
-        public /*virtual*/ ICollection<Recepie> Recepies 
-        { 
-            get { return this.recepies ?? new HashSet<Recepie>(); } 
+        public virtual ICollection<Recepie> Recepies 
+        {
+            get { return this.recepies; } 
             set { this.recepies = value; } 
         }
         

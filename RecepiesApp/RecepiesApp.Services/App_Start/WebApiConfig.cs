@@ -20,6 +20,14 @@ namespace RecepiesApp.Services
             // CUSTOM ROUTES:
             //DefaultApi + api/çomments/byuser/{id}
             //DefaultApi + api/çomments/onrecepie/{id}
+            //DefaultApi + api/recepiephases/byrecepie/{id}
+            //DefaultApi + api/favourites/byuser/{id} - returns recepies
+            //DefaultApi + api/favourites/byrecepie/{id} - returns users
+
+            // OTHER
+            //Favourites has NO "All" method!
+            //Favourites has NO "Select" method!
+            //Favourites has NO "Edit" method!
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

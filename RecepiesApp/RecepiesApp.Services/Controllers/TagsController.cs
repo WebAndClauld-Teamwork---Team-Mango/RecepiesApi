@@ -25,33 +25,15 @@ namespace RecepiesApp.Services.Controllers
         [HttpGet]
         public HttpResponseMessage All()
         {
-            var results = this.Repository.All().Select(t => new TagModel()
-            {
-                Id = t.Id,
-                Name = t.Name
-            });
+            var results = this.Repository.All().Select(TagModel.FromDbModel);
             return Request.CreateResponse(HttpStatusCode.OK, results);
         }
 
         [HttpGet]
         public HttpResponseMessage Select(int id)
         {
-            var tag = this.Repository.All().FirstOrDefault(t => t.Id == id);
-            var result = new TagModel()
-            {
-                Id = tag.Id,
-                Name = tag.Name,
-                Recepies = tag.Recepies.Select(r => new RecepieLightModel()
-                { 
-                    Id = r.Id,
-                    Date = r.Date,
-                    Name = r.Name,
-                    Description = r.Description,
-                    Nickname = r.UserInfo.Nickname,
-                    PictureUrl = r.PictureUrl
-                })
-            };
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            var tag = this.Repository.All().Select(TagModel.FromDbModelWithRecepies).FirstOrDefault(t => t.Id == id);
+            return Request.CreateResponse(HttpStatusCode.OK, tag);
 
         }
 

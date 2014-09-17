@@ -13,13 +13,6 @@ namespace RecepiesApp.Services.Models
     /// </summary>
     public class UserInfoModel
     {
-        //public UserInfoModel() 
-        //{
-        //    this.Recepies = new HashSet<RecepieLightModel>();
-        //    this.FavouriteRecepies = new HashSet<RecepieLightModel>();
-        //    this.RecepieComments = new HashSet<RecepieCommentModel>();
-        //}
-        
         public virtual int Id { get; set; }
         
         public virtual string Nickname { get; set; }
