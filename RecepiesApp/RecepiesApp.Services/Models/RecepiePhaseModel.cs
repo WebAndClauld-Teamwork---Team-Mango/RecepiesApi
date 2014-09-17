@@ -29,13 +29,17 @@ namespace RecepiesApp.Services.Models
 
         public virtual int Id { get; set; }
         
+        [Required]
         public virtual int NumberOfPhase { get; set; }
         
+        [Required]
         public virtual string Name { get; set; }
         
+        [Required]
         public virtual int Minutes { get; set; }
 
         //default is False
+        [Required]
         public virtual bool IsImportnt { get; set; }
     }
 }

@@ -15,10 +15,13 @@ namespace RecepiesApp.Services.Models
     {
         public virtual int Id { get; set; }
         
+        [Required]
         public virtual string Nickname { get; set; }
-
+        
+        [Required]
         public virtual string Description { get; set; }
         
+        [Required]
         public virtual string PictureUrl { get; set; }
         
         public IEnumerable<RecepieLightModel> Recepies { get; set; }

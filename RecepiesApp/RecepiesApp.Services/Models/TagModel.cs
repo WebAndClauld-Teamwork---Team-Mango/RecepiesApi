@@ -37,7 +37,8 @@ namespace RecepiesApp.Services.Models
         }
         
         public virtual int Id { get; set; }
-
+        
+        [Required]
         public virtual string Name { get; set; }
         
         

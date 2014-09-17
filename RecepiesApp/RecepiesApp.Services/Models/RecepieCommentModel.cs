@@ -29,14 +29,18 @@ namespace RecepiesApp.Services.Models
 
         public virtual int Id { get; set; }
         
+        [Required]
         public virtual string Content { get; set; }
         
+        [Required]
         public virtual int RecepieId { get; set; }
         
+        [Required]
         public virtual int UserInfoId { get; set; }
-
+        
         public virtual string Nickname { get; set; }
-
+        
+        [Required]
         public virtual DateTime Date { get; set; }
     }
 }
