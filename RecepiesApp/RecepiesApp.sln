@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecepiesApp.Data", "RecepiesApp.Data\RecepiesApp.Data.csproj", "{E5E70BB5-7576-4EE7-AC9F-6274D2830BA9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecepiesApp.Models", "RecepiesApp.Models\RecepiesApp.Models\RecepiesApp.Models.csproj", "{3614E2BA-B4EE-456C-8C03-C9EB5DFADB7D}"
@@ -24,9 +22,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecepiesApp.Services", "RecepiesApp.Services\RecepiesApp.Services.csproj", "{98917933-3500-40B6-BB86-85684B0034E8}"
 EndProject
 Global
-	GlobalSection(JSLint) = preSolution
-		SolutionConfigurationLocation = JSLintOptions.xml
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -51,5 +46,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(JSLint) = preSolution
+		SolutionConfigurationLocation = JSLintOptions.xml
 	EndGlobalSection
 EndGlobal

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Web.OData.Extensions;
 
 namespace RecepiesApp.Services
 {
@@ -19,6 +21,8 @@ namespace RecepiesApp.Services
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+            config.EnableCors();
+            config.AddODataQueryFilter();
 
             // MAIN ROUTES:
             //DefaultApi + api/{controller}/all
@@ -44,6 +48,9 @@ namespace RecepiesApp.Services
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
         }
     }
 }
