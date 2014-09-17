@@ -7,13 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using RecepiesApp.Data.Migrations;
 using RecepiesApp.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace RecepiesApp.Data
 {
-    public class RecepiesDbContext : DbContext, IRecepiesDbContext
+    public class RecepiesDbContext : IdentityDbContext<ApplicationUser>, IRecepiesDbContext
     {
         public RecepiesDbContext()
-            : this("AppHarbor")
+            : this("localhost")
         {
         }
 
@@ -23,9 +24,14 @@ namespace RecepiesApp.Data
         }
 
         public RecepiesDbContext(string connectionString)
-            :base(connectionString)
+            : base(connectionString, throwIfV1Schema: false)
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<RecepiesDbContext,Configuration>());
+        }
+
+        public static RecepiesDbContext Create()
+        {
+            return new RecepiesDbContext();
         }
         
         public virtual DbSet<Recepie> Recepies { get; set; }
