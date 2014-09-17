@@ -32,14 +32,14 @@
             this.get("#/recipes", function() { 
                 var recipeController=new RecipesController(recipesEndpoint);
                 //template test
-                var recipes=[];
+                var recepies=[];
                 for(var i=0;i<10;i++){
                     var time=((Math.random()*180)+10)|0;
-                    recipes.push(new Recipe(i,'recipe '+i,'recipe desc'+i,'images/thumbnails/food-image-1.jpg',time));
+                    recepies.push(new Recipe(i,'recipe '+i,'recipe desc'+i,'images/thumbnails/food-image-1.jpg',time));
                 }
                 //data
                 var data={
-                    'recipes':recipes
+                    'recepies':recepies
                 };
                 //console.log(data);
                 var recipesController=new RecipesController(recipesEndpoint);    

@@ -7,15 +7,15 @@ define(['jquery', 'requestModule','handlebars'], function ($, requestModule) {
         RecipesController.prototype = {
             
             generateThumbnails:function(data)
-            {                
-
-                console.log(data);
-                //             
-                var selectTemplate = $("#content-box").html();                 
-                //var selectTemplate = $("#select-template").html();
-                //var generateSelect = Handlebars.compile(selectTemplate);
-                //$("#select-container").html(generateSelect(data));
-                //
+            {				
+				var recipesListContainer = $("#content-box");
+				var generateRecipes = Handlebars.compile($('#recipes-template').html());
+				// empty the container
+				while (recipesListContainer.firstChild) {
+					recipesListContainer.removeChild(recipesListContainer.firstChild);
+				}
+				
+				recipesListContainer.html(generateRecipes(data));
             },
 
             loadUI: function (selector) {                

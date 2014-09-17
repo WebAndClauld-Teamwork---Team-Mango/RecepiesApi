@@ -37,71 +37,25 @@
         <input id="tb-search" type="text" placeholder="Search Recipe"/><br/>
 
         <div id="content-box">
-            <div class="recipe-thumbnail-box">
-                <img src="images/thumbnails/food-image-1.jpg" alt="short food description"/>
-                <strong>Image Title</strong>
-
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum</p>
-
-                <div class="time-consuming">35 min</div>
-                <button class="btn-details" >DETAILS</button>
-            </div>
-            <div class="recipe-thumbnail-box">
-                <img src="images/thumbnails/food-image-1.jpg" alt="short food description"/>
-                <strong>Image Title</strong>
-
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum</p>
-
-                <div class="time-consuming">35 min</div>
-                <button class="btn-details" >DETAILS</button>
-            </div>
-            <div class="recipe-thumbnail-box">
-                <img src="images/thumbnails/food-image-1.jpg" alt="short food description"/>
-                <strong>Image Title</strong>
-
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum</p>
-
-                <div class="time-consuming">35 min</div>
-                <button class="btn-details" >DETAILS</button>
-            </div>
-            <div class="recipe-thumbnail-box">
-                <img src="images/thumbnails/food-image-1.jpg" alt="short food description"/>
-                <strong>Image Title</strong>
-
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum</p>
-
-                <div class="time-consuming">35 min</div>
-                <button class="btn-details" >DETAILS</button>
-            </div>
-            <div class="recipe-thumbnail-box">
-                <img src="images/thumbnails/food-image-1.jpg" alt="short food description"/>
-                <strong>Image Title</strong>
-
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum</p>
-
-                <div class="time-consuming">35 min</div>
-                <button class="btn-details" >DETAILS</button>
-            </div>
-            <div class="recipe-thumbnail-box">
-                <img src="images/thumbnails/food-image-1.jpg" alt="short food description"/>
-                <strong>Image Title</strong>
-
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum</p>
-
-                <div class="time-consuming">35 min</div>
-                <button class="btn-details" >DETAILS</button>
-            </div>
         </div>
+		
         <div style="clear: both;">&nbsp;</div>
     </section>
     <div style="clear: both;">&nbsp;</div>
     <footer>Team Mango - TelerikAcademy 2014 - Web Services</footer>
 </div>
+<script id="recipes-template" type='text/x-handlebars-template'>
+	{{#recepies}}
+	<div class="recipe-thumbnail-box">
+		<img src="{{thumb_image}}" alt="{{name}}"/>
+		<strong>{{name}}</strong>
+
+		<p>{{description}}</p>
+
+		<div class="time-consuming">{{timeConsuming}}</div>
+		<a href="#/recipe/{{id}}"><button class="btn_details" >DETAILS</button></a>
+	</div>
+	{{/recepies}}
+</script>
 </body>
 </html>
