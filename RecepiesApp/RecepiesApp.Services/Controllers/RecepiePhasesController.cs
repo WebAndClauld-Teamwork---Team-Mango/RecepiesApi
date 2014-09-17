@@ -58,8 +58,13 @@ namespace RecepiesApp.Services.Controllers
             var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
             if (item != null)
             {
-                //Should only edit the passed values. Should not tuch any other values
-                throw new NotImplementedException();
+                item.IsImportnt = value.IsImportnt;
+                item.Minutes = value.Minutes;
+                item.Name = value.Name;
+                item.NumberOfPhase = value.NumberOfPhase;
+
+                this.Repository.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             else
             {

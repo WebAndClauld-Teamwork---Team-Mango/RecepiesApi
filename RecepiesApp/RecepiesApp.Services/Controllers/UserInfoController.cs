@@ -77,13 +77,17 @@ namespace RecepiesApp.Services.Controllers
 
         // PUT api/userinfo/5
         [HttpPut]
-        public HttpResponseMessage Edit(int id, [FromBody]UserInfoLightModel value)
+        public HttpResponseMessage Edit(int id, [FromBody]UserInfoModel value)
         {
-            var user = this.Repository.All().FirstOrDefault(u => u.Id == id);
-            if (user != null)
+            var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
+            if (item != null)
             {
-                //Should only edit the passed values. Should not tuch any other values
-                throw new NotImplementedException();
+                item.Nickname = value.Nickname;
+                item.Description = value.Description;
+                item.PictureUrl = value.PictureUrl;
+
+                this.Repository.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             else
             {

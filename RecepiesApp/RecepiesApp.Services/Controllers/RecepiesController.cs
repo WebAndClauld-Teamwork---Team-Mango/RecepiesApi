@@ -86,14 +86,18 @@ namespace RecepiesApp.Services.Controllers
 
         // PUT api/recepies/edit/5
         [HttpPut]
-        public HttpResponseMessage Edit(int id, [FromBody]
-                                        RecepieLightModel value)
+        public HttpResponseMessage Edit(int id, [FromBody]RecepieModel value)
         {
             var recepie = this.Repository.All().FirstOrDefault(u => u.Id == id);
             if (recepie != null)
             {
-                //Should only edit the passed values. Should not tuch any other values
-                throw new NotImplementedException();
+                recepie.Date = value.Date;
+                recepie.Description = value.Description;
+                recepie.Name = value.Name;
+                recepie.PictureUrl = value.PictureUrl;
+
+                this.Repository.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             else
             {

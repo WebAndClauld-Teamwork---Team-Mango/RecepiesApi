@@ -48,11 +48,12 @@ namespace RecepiesApp.Services.Controllers
         [HttpPut]
         public HttpResponseMessage Edit(int id, [FromBody]TagModel value)
         {
-            var recepie = this.Repository.All().FirstOrDefault(u => u.Id == id);
-            if (recepie != null)
+            var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
+            if (item != null)
             {
-                //Should only edit the passed values. Should not tuch any other values
-                throw new NotImplementedException();
+                item.Name = value.Name;
+                this.Repository.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             else
             {
@@ -63,10 +64,10 @@ namespace RecepiesApp.Services.Controllers
         [HttpDelete]
         public HttpResponseMessage Delete(int id)
         {
-            var recepie = this.Repository.All().FirstOrDefault(u => u.Id == id);
-            if (recepie != null)
+            var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
+            if (item != null)
             {
-                recepie.IsDeleted = true;
+                item.IsDeleted = true;
                 this.Repository.SaveChanges();
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
