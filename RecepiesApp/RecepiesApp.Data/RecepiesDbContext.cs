@@ -13,7 +13,7 @@ namespace RecepiesApp.Data
     public class RecepiesDbContext : DbContext, IRecepiesDbContext
     {
         public RecepiesDbContext()
-            : this("Server=.;Database=RecepiesAppDatabase;Trusted_Connection=True;")
+            : this("AppHarbor")
         {
         }
 
