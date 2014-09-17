@@ -6,12 +6,16 @@ define(['jquery', 'requestModule','handlebars'], function ($, requestModule) {
 
         RecipesController.prototype = {
             
-            generateThumbNails:function()
+            generateThumbnails:function(data)
             {                
-                //
+
+                console.log(data);
+                //             
+                var selectTemplate = $("#content-box").html();                 
                 //var selectTemplate = $("#select-template").html();
                 //var generateSelect = Handlebars.compile(selectTemplate);
                 //$("#select-container").html(generateSelect(data));
+                //
             },
 
             loadUI: function (selector) {                
