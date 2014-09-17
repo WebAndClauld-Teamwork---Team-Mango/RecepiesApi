@@ -1,4 +1,4 @@
-define(['jquery', 'requestModule','handlebars'], function ($, requestModule) {
+define(['jquery', 'requestModule','recipesPersister','handlebars',], function ($, requestModule,RecipesPersister) {
     var RecipesController = (function () {
         function RecipesController(rootUrl) {
             this.rootUrl = rootUrl;
@@ -8,7 +8,8 @@ define(['jquery', 'requestModule','handlebars'], function ($, requestModule) {
             
             generateThumbnails:function(data)
             {				
-				var recipesListContainer = $("#content-box");
+                //
+                var recipesListContainer = $("#content-box");
 				var generateRecipes = Handlebars.compile($('#recipes-template').html());
 				// empty the container
 				while (recipesListContainer.firstChild) {

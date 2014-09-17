@@ -7,16 +7,21 @@
             'requestModule' : 'libs/requestModule',
             'mainController' : 'controllers/mainController',
             'recipesController':'controllers/recipesController',
+            //persisters
+            'recipesPersister':'persisters/recepiesPersister',
             //entities
-            'recipe':'entities/recipe'
+            'recipe':'entities/recipe',
+            //helpers
+            'rest_helper':'helpers/rest_helper'
         }
     });
 
-    require(['recipesController','sammy','recipe'], function (RecipesController,sammy,Recipe) {
+    require(['recipesPersister','recipesController','sammy','recipe'], function (RecipesPersister,RecipesController,sammy,Recipe) {
 
         //define endpoints
-        var rootUrl='http://localhost/';
-        var recipesEndpoint = rootUrl+'recipes';
+        var rootUrl='http://localhost:1937/api/';    
+
+        var recipesEndpoint = rootUrl+'recepies';
 
         var container='#content-box';
 
@@ -37,6 +42,8 @@
                     var time=((Math.random()*180)+10)|0;
                     recepies.push(new Recipe(i,'recipe '+i,'recipe desc'+i,'images/thumbnails/food-image-1.jpg',time));
                 }
+                var recipesPersister=new RecipesPersister(recipesEndpoint);
+                recipesPersister.loadAllRecepies();
                 //data
                 var data={
                     'recepies':recepies
