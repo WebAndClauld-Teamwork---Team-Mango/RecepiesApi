@@ -15,6 +15,7 @@ namespace RecepiesApp.ConsoleClient
             var db = new RecepiesDbContext();
             db.Database.CreateIfNotExists();
             Console.WriteLine("Database initialized.");
+            RecepiesApp.Data.Generators.StartupGenerator.AddEntriesToDatabase(db);
         }
     }
 }

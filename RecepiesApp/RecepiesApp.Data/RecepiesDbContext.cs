@@ -61,7 +61,7 @@ namespace RecepiesApp.Data
 
         public new void SaveChanges()
         {
-            this.SaveChanges();
+            base.SaveChanges();
         }
 
         DbSet<T> Set<T>() where T : class 

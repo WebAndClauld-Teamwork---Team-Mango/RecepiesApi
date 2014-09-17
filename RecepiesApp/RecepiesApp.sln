@@ -18,7 +18,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8D602A
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A7148301-B333-4D94-98B6-5CAFC829F707}"
+	ProjectSection(SolutionItems) = preProject
+		JSLintOptions.xml = JSLintOptions.xml
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(JSLint) = preSolution
+		SolutionConfigurationLocation = JSLintOptions.xml
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
