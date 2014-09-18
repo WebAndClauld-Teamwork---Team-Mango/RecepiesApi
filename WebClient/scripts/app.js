@@ -45,10 +45,13 @@
                     'recepies':recepies
                 };
                 //
-                var th=RecepiesPersister(RECEPIES_ENDPOINT);
-                th.loadAllRecepies();
-                //
-                recepiesController.generateThumbnails(data);
+                var recepiesPersister=RecepiesPersister(RECEPIES_ENDPOINT);
+                recepiesPersister.loadAllRecepies(function(results){
+                    var data={'recepies':results};
+                    //
+                    recepiesController.generateThumbnails(data);        
+                });
+                //                
             });
 
             this.get("#/recipe/:id",function(){

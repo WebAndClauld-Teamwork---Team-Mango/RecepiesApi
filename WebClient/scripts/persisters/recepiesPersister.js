@@ -4,12 +4,18 @@ define(['jquery','restHelper'/*dependencies*/], function ($,RESThelper) {
     		this.rest=new RESThelper();
         	this.endpoint=endpoint;
 	        
-	        function loadAllRecepies(){
+
+	        function loadAllRecepies(onSuccess,onFail){
 	        	var url=endpoint+'/all';
 	        	this.rest.getJSON(url,function(data){
-	        		console.log(data);
+	        		if(onSuccess!==undefined){
+	        			onSuccess(data);
+	        		}
 	        	}, function(responce){
-	        		console.log(responce);
+	        		//log error here...
+	        		if(onFail!==undefined)
+	        		onFail(responce);
+	        		//console.log(responce);
 	        	});
 	        }               
 	        
