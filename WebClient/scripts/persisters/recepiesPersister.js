@@ -1,4 +1,4 @@
-define(['jquery','rest_helper'/*dependencies*/], function ($,RESThelper) {
+define(['jquery','restHelper'/*dependencies*/], function ($,RESThelper) {
     var RecepiesPersister = (function (endpoint) {
         	
     		this.rest=new RESThelper();

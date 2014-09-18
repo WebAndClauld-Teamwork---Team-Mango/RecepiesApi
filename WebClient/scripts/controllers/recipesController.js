@@ -1,4 +1,4 @@
-define(['jquery', 'requestModule','recipesPersister','handlebars',], function ($, requestModule,RecipesPersister) {
+define(['jquery', 'requestModule','fileHelper','handlebars','constants'], function ($, requestModule,FileHelper) {
     var RecipesController = (function () {
         function RecipesController(rootUrl) {
             this.rootUrl = rootUrl;
@@ -8,6 +8,15 @@ define(['jquery', 'requestModule','recipesPersister','handlebars',], function ($
             
             generateThumbnails:function(data)
             {				
+                //create file helper
+                var fileHelper=new FileHelper();
+                //read recipes template
+                fileHelper.loadTextFile(RECEPIES_TEMPLATE,function(result){
+                    console.log(result);
+                },function(error){
+                    //report error here...
+                    console.log(error);
+                });                
                 //
                 var recipesListContainer = $("#content-box");
 				var generateRecipes = Handlebars.compile($('#recipes-template').html());

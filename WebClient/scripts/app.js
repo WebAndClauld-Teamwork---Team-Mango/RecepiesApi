@@ -1,18 +1,23 @@
 (function () {
     require.config({
         paths: {
+            //libs
             'jquery' : 'libs/jquery-2.1.1.min',
             'sammy' : 'libs/sammy-latest.min',
             'handlebars':'libs/handlebars',
             'requestModule' : 'libs/requestModule',
             'mainController' : 'controllers/mainController',
             'recipesController':'controllers/recipesController',
+            //configs
+            'constants':'configs/constants',
             //persisters
             'recipesPersister':'persisters/recepiesPersister',
             //entities
             'recipe':'entities/recipe',
             //helpers
-            'rest_helper':'helpers/rest_helper'
+            'restHelper':'helpers/restHelper',
+            'requestModule':'helpers/requestModule',
+            'fileHelper':'helpers/fileHelper'
         }
     });
 
@@ -20,9 +25,7 @@
 
         //define endpoints
         var rootUrl='http://localhost:1937/api/';    
-
         var recipesEndpoint = rootUrl+'recepies';
-
         var container='#content-box';
 
         //var theController = new mainController(rootUrl);
@@ -42,8 +45,9 @@
                     var time=((Math.random()*180)+10)|0;
                     recepies.push(new Recipe(i,'recipe '+i,'recipe desc'+i,'images/thumbnails/food-image-1.jpg',time));
                 }
-                var recipesPersister=new RecipesPersister(recipesEndpoint);
-                recipesPersister.loadAllRecepies();
+                //
+                //var recipesPersister=new RecipesPersister(recipesEndpoint);
+                //recipesPersister.loadAllRecepies();
                 //data
                 var data={
                     'recepies':recepies

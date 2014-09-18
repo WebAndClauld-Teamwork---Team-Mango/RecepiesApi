@@ -1,0 +1,47 @@
+{{#data}}
+	<aside>
+		<img src="{{PictureUrl}}" alt="{{Name}}"/>
+		<span>Author: </span> <strong><a href="#">{{#with UserInfo}}{{Nickname}}{{/with}}</a></strong><br/>
+		<span>Published on: </span> <strong><a href="#">{{Date}}</a></strong><br/>
+		<div class="taglist">
+			<span>Tags:</span>
+			{{#Tags}}
+			{{#with this}}
+			<a href="#{{id}}">{{Name}}</a>&nbsp;
+			{{/with}}
+			{{/Tags}}
+		</div>
+		<ol><strong>Cooking Steps:</strong>
+		{{#RecepiePhases}}
+		{{#with this}}
+			<li>{{Name}} - {{Minutes}} min</li>
+		{{/with}}
+		{{/RecepiePhases}}
+		</ol>
+	</aside>
+	<article>
+		<h3>{{Name}}</h3>
+		<p id="recipe-text">{{Description}}</p>
+		<button>Add to Favourites</button>
+		<button>Share on Facebook</button>
+		<button>Share on Twitter</button>
+		<button>Email Friend</button>
+		<div style="clear: both;">&nbsp;</div>
+	</article>
+	<div style="clear: both;">&nbsp;</div>
+	<section>
+		<ol><h4 style="margin-left: 10px;">Recipe Comments: </h4>
+		{{#Comments}}
+		{{#with this}}
+		<li>
+		<div class="comment-box">
+			<header> [<a href="#">{{Nickname}}</a>] {{Date}}</header>
+			<p>{{Content}}</p>
+			<p><a href="#">Цитирай</a> | <a href="#">Докладвай!</a> | <a href="#">Редактирай </a> | <a href="#">Изтрий!</a></p>
+		</div>
+		</li>
+		{{/with}}
+		{{/Comments}}
+		</ol>
+	</section>
+{{/data}}
