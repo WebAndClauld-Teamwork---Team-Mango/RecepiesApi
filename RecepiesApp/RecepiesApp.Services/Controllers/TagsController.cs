@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using RecepiesApp.Data;
 using RecepiesApp.Data.Repository;
 using RecepiesApp.Models;
 using RecepiesApp.Services.Models;
@@ -11,17 +12,8 @@ using RecepiesApp.Services.Validators;
 
 namespace RecepiesApp.Services.Controllers
 {
-    public class TagsController : ApiController, IRepositoryHandler<Tag>
+    public class TagsController : ApiController
     {
-        public TagsController() 
-        {
-            if (repository == null)
-            {
-                repository = new Repository<Tag>();
-            }
-        }
-
-        private static IRepository<Tag> repository;
         
         [HttpGet]
         public HttpResponseMessage All(string nickname, string sessionKey)
@@ -117,12 +109,19 @@ namespace RecepiesApp.Services.Controllers
                 return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
             }
         }
-
-        public Data.Repository.IRepository<Tag> Repository
+        
+        private IRepository<Tag> Repository
         {
             get 
             {
-                return repository;
+                return UnitOfWorkHandler.Data.Tags;
+            }
+        }
+        private IRecepiesData Data
+        {
+            get 
+            {
+                return UnitOfWorkHandler.Data;
             }
         }
     }

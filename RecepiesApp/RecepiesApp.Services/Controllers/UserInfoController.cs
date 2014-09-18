@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using RecepiesApp.Data;
 using RecepiesApp.Data.Repository;
 using RecepiesApp.Models;
 using RecepiesApp.Services.Models;
@@ -12,18 +13,8 @@ using RecepiesApp.Services.Validators;
 
 namespace RecepiesApp.Services.Controllers
 {
-    public class UserInfoController : ApiController, IRepositoryHandler<UserInfo>
+    public class UserInfoController : ApiController
     {
-        public UserInfoController() 
-        {
-            if (repository == null)
-            {
-                repository = new Repository<UserInfo>();
-            }
-        }
-
-        private static IRepository<UserInfo> repository;
-        
         [HttpGet]
         public HttpResponseMessage All()
         {
@@ -185,11 +176,18 @@ namespace RecepiesApp.Services.Controllers
             }
         }
 
-        public IRepository<UserInfo> Repository
+        private IRepository<UserInfo> Repository
         {
             get 
             {
-                return repository;
+                return UnitOfWorkHandler.Data.UserInfos;
+            }
+        }
+        private IRecepiesData Data
+        {
+            get 
+            {
+                return UnitOfWorkHandler.Data;
             }
         }
     }

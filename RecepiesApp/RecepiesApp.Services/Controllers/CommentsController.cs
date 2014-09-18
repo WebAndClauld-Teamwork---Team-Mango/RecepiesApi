@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using RecepiesApp.Data;
 using RecepiesApp.Data.Repository;
 using RecepiesApp.Models;
 using RecepiesApp.Services.Models;
@@ -11,18 +12,8 @@ using RecepiesApp.Services.Validators;
 
 namespace RecepiesApp.Services.Controllers
 {
-    public class CommentsController : ApiController, IRepositoryHandler<RecepieComment>
-    {
-        public CommentsController() 
-        {
-            if (repository == null)
-            {
-                repository = new Repository<RecepieComment>();
-            }
-        }
-
-        private static IRepository<RecepieComment> repository;
-        
+    public class CommentsController : ApiController
+    { 
         [HttpGet]
         public HttpResponseMessage All()
         {
@@ -157,11 +148,18 @@ namespace RecepiesApp.Services.Controllers
             }
         }
 
-        public Data.Repository.IRepository<RecepieComment> Repository
+        private IRepository<RecepieComment> Repository
         {
             get 
             {
-                return repository;
+                return UnitOfWorkHandler.Data.RecepieComments;
+            }
+        }
+        private IRecepiesData Data
+        {
+            get 
+            {
+                return UnitOfWorkHandler.Data;
             }
         }
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using RecepiesApp.Data;
 using RecepiesApp.Data.Repository;
 using RecepiesApp.Models;
 using RecepiesApp.Services.Models;
@@ -11,19 +12,8 @@ using RecepiesApp.Services.Validators;
 
 namespace RecepiesApp.Services.Controllers
 {
-    public class FavouritesController  : ApiController, IRepositoryHandler<UserFavouriteRecepie>
+    public class FavouritesController  : ApiController
     {
-        public FavouritesController() 
-        {
-            if (repository == null)
-            {
-                repository = new Repository<UserFavouriteRecepie>();
-            }
-        }
-
-        private static IRepository<UserFavouriteRecepie> repository;
-        
-        
         [HttpGet]
         public HttpResponseMessage ByUser(int userId, string nickname, string sessionKey)
         {
@@ -96,11 +86,19 @@ namespace RecepiesApp.Services.Controllers
             }
         }
 
-        public Data.Repository.IRepository<UserFavouriteRecepie> Repository
+        
+        private IRepository<UserFavouriteRecepie> Repository
         {
             get 
             {
-                return repository;
+                return UnitOfWorkHandler.Data.UserFavouriteRecepies;
+            }
+        }
+        private IRecepiesData Data
+        {
+            get 
+            {
+                return UnitOfWorkHandler.Data;
             }
         }
     }

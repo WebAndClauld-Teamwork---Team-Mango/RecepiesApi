@@ -27,6 +27,9 @@ namespace RecepiesApp.Services
             config.EnableCors(attribute);
             config.AddODataQueryFilter();
 
+            // CHEATING:
+            //to cheat use "nickname=IAmCheater&sessionKey=IndeedIAm" - the system will act as if you're logged in
+
             // MAIN ROUTES:
             //DefaultApi + api/{controller}/all?nickname={nickname}&sessionKey={sessionKey}
             //DefaultApi + api/{controller}/select?id={id}&nickname={nickname}&sessionKey={sessionKey}

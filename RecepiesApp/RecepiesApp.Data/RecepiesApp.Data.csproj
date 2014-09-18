@@ -58,10 +58,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RecepiesData.cs" />
     <Compile Include="Generators\TagsGenerator.cs" />
     <Compile Include="Generators\StartupGenerator.cs" />
     <Compile Include="Generators\RecepieGenerator.cs" />
     <Compile Include="Generators\UserGenerator.cs" />
+    <Compile Include="IRecepiesData.cs" />
     <Compile Include="IRecepiesDbContext.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Generators\DataGenerator.cs" />

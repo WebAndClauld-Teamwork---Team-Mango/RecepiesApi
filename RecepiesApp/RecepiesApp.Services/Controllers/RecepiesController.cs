@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using RecepiesApp.Data;
 using RecepiesApp.Data.Repository;
 using RecepiesApp.Models;
 using RecepiesApp.Services.Models;
@@ -11,17 +12,9 @@ using RecepiesApp.Services.Validators;
 
 namespace RecepiesApp.Services.Controllers
 {
-    public class RecepiesController : ApiController, IRepositoryHandler<Recepie>
+    public class RecepiesController : ApiController
     {
-        public RecepiesController() 
-        {
-            if (repository == null)
-            {
-                repository = new Repository<Recepie>();
-            }
-        }
-        private static IRepository<Recepie> repository;
-
+       
         // GET api/recepies/all
         [HttpGet]
         public HttpResponseMessage All(string nickname, string sessionKey)
@@ -194,11 +187,19 @@ namespace RecepiesApp.Services.Controllers
             }
         }
         
-        public IRepository<Recepie> Repository
+        
+        private IRepository<Recepie> Repository
         {
             get 
             {
-                return repository;
+                return UnitOfWorkHandler.Data.Recepies;
+            }
+        }
+        private IRecepiesData Data
+        {
+            get 
+            {
+                return UnitOfWorkHandler.Data;
             }
         }
     }

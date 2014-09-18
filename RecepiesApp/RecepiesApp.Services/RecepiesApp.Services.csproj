@@ -225,10 +225,10 @@
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\FavouritesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\IRepositoryHandler.cs" />
     <Compile Include="Controllers\RecepiePhasesController.cs" />
     <Compile Include="Controllers\RecepiesController.cs" />
     <Compile Include="Controllers\TagsController.cs" />
+    <Compile Include="Controllers\UnitOfWorkHandler.cs" />
     <Compile Include="Controllers\UserInfoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
