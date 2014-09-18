@@ -1,0 +1,27 @@
+<section id="user-box">
+    <img class="user-avatar" src="{{PictureUrl}}" alt="user-avatar"/>
+    <strong>{{Nickname}}</strong>
+    <p>{{Description}}</p>
+    <hr/>
+    <div style="clear: both;">&nbsp;</div>
+    <aside id="favourites-container">
+        <h3>Favourite Recipes:</h3>
+        <ul>
+            {{#FavouriteRecepies}}
+            <li>
+                <a href="#/recipe/{{Id}}"><img src="{{PictureUrl}}" class="small-image" alt=""/></a>
+                <a href="#/recipe/{{Id}}">{{Name}}</a>
+            </li>
+            {{/FavouriteRecepies}}
+        </ul>
+    </aside>
+    <section id="user-recipes-container">
+        <h3 style="margin-left: 20px;">User Recipes:</h3>
+        {{#Recepies}}
+        <div class="user-recipe">
+            <string><a href="#/recipe/{{Id}}">{{Name}}</a></string>
+            <p>{{Description}}</p>
+        </div>
+        {{/Recepies}}
+    </section>
+</section>

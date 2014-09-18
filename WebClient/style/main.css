@@ -197,4 +197,27 @@ footer {
     margin: 15px;
 }
 
+#user-box .small-image {
+    width: 140px;
+    display: block;
+    margin: 10px auto;
+}
+
+#user-box #favourites-container {
+    float: left;
+    border: 1px solid #000;
+    padding: 10px;
+}
+
+#user-box #favourites-container ul li {
+    padding: 5px;
+    background: lightgray;
+    margin-top: 10px;
+}
+
+#user-box #user-recipes-container {
+    float: left;
+    width: 700px;
+}
+
 /* USER PAGE END */
