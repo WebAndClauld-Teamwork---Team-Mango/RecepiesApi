@@ -8,6 +8,7 @@ using RecepiesApp.Data.Repository;
 using RecepiesApp.Models;
 using RecepiesApp.Services.Models;
 using RecepiesApp.Services.Validators;
+using RecepiesApp.Services.Notifications;
 
 namespace RecepiesApp.Services.Controllers
 {
@@ -19,9 +20,12 @@ namespace RecepiesApp.Services.Controllers
             {
                 repository = new Repository<RecepieComment>();
             }
+
+            this.notifier = new Notifier();
         }
 
         private static IRepository<RecepieComment> repository;
+        private Notifier notifier;
         
         [HttpGet]
         public HttpResponseMessage All()
@@ -97,7 +101,12 @@ namespace RecepiesApp.Services.Controllers
             {
                 this.Repository.Add(value);
                 this.Repository.SaveChanges();
-                return Request.CreateResponse(HttpStatusCode.OK);
+                var notifyNickname = this.Repository.All()
+                    .Where(rc => rc.RecepieId == value.RecepieId)
+                    .Select(r => r.Recepie.UserInfo.Nickname)
+                    .FirstOrDefault();
+                var notificationResult = this.notifier.Notify(notifyNickname, value);
+                return Request.CreateResponse(HttpStatusCode.OK, notificationResult);
             }
             else
             {
