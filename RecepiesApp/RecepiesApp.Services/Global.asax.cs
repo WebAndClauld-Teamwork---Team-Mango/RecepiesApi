@@ -22,7 +22,8 @@ namespace RecepiesApp.Services
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            //Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            //Removed this due to conflict with WebConfig.cs header setting -dev705
         }
     }
 }

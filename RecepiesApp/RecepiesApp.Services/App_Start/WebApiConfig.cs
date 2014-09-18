@@ -22,7 +22,9 @@ namespace RecepiesApp.Services
 
             // Web API routes
             config.MapHttpAttributeRoutes();
-            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
+
+            var attribute = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(attribute);
             config.AddODataQueryFilter();
 
             // MAIN ROUTES:
