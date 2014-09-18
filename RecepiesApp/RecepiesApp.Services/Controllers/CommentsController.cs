@@ -18,66 +18,38 @@ namespace RecepiesApp.Services.Controllers
         public HttpResponseMessage All()
         {
             var comments = this.Repository.All();
-                
             var results = comments.Select(RecepieCommentModel.FromDbModel);
-
             return Request.CreateResponse(HttpStatusCode.OK, results);
         }
         
         [HttpGet]
-        public HttpResponseMessage ByUser(int userId, string nickname, string sessionKey)
+        public HttpResponseMessage ByUser(int userId)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var comments = this.Repository.All().Where(c => c.UserInfoId == userId);
-                var results = comments.Select(RecepieCommentModel.FromDbModel);
-                return Request.CreateResponse(HttpStatusCode.OK, results);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
+            var comments = this.Repository.All().Where(c => c.UserInfoId == userId);
+            var results = comments.Select(RecepieCommentModel.FromDbModel);
+            return Request.CreateResponse(HttpStatusCode.OK, results);
         }
         
         [HttpGet]
-        public HttpResponseMessage OnRecepie(int recepieId, string nickname, string sessionKey)
+        public HttpResponseMessage OnRecepie(int recepieId)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var comments = this.Repository.All().Where(c => c.RecepieId == recepieId);
-                var results = comments.Select(RecepieCommentModel.FromDbModel);
-                return Request.CreateResponse(HttpStatusCode.OK, results);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
-            
+            var comments = this.Repository.All().Where(c => c.RecepieId == recepieId);
+            var results = comments.Select(RecepieCommentModel.FromDbModel);
+            return Request.CreateResponse(HttpStatusCode.OK, results);
         }
 
         [HttpGet]
-        public HttpResponseMessage Select(int id, string nickname, string sessionKey)
+        public HttpResponseMessage Select(int id)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
+            var cpmment = this.Repository.All().Select(RecepieCommentModel.FromDbModel).FirstOrDefault(rc => rc.Id == id);
+            if (cpmment != null)
             {
-                var cpmment = this.Repository.All().Select(RecepieCommentModel.FromDbModel).FirstOrDefault(rc => rc.Id == id);
-                if (cpmment != null)
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, cpmment);
-                }
-                else
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The comment was not found");
-                }
+                return Request.CreateResponse(HttpStatusCode.OK, cpmment);
             }
             else
             {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The comment was not found");
             }
-            
         }
 
         [HttpPost]

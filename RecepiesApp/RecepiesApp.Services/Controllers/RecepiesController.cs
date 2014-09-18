@@ -17,101 +17,74 @@ namespace RecepiesApp.Services.Controllers
        
         // GET api/recepies/all
         [HttpGet]
-        public HttpResponseMessage All(string nickname, string sessionKey)
+        public HttpResponseMessage All()
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var results = this.Repository.All().Select(RecepieLightModel.FromDbModel).OrderBy(r => r.Date);
-                return Request.CreateResponse(HttpStatusCode.OK, results);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
+            var results = this.Repository.All().Select(RecepieLightModel.FromDbModel).OrderBy(r => r.Date);
+            return Request.CreateResponse(HttpStatusCode.OK, results);
         }
 
         // GET api/recepies/select/5
         [HttpGet]
-        public HttpResponseMessage Select(int id, string nickname, string sessionKey)
+        public HttpResponseMessage Select(int id)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
+            var recepies = this.Repository.All();
+            var recepie = recepies.FirstOrDefault(u => u.Id == id);
+            if (recepie != null)
             {
-                var recepies = this.Repository.All();
-
-                var recepie = recepies.FirstOrDefault(u => u.Id == id);
-
-                if (recepie != null)
+                var result = new RecepieModel()
                 {
-                    var result = new RecepieModel()
+                    Id = recepie.Id,
+                    Name = recepie.Name,
+                    Description = recepie.Description,
+                    Date = recepie.Date,
+                    PictureUrl = recepie.PictureUrl,
+                    UserInfo = new UserInfoLightModel()
                     {
-                        Id = recepie.Id,
-                        Name = recepie.Name,
-                        Description = recepie.Description,
-                        Date = recepie.Date,
-                        PictureUrl = recepie.PictureUrl,
-                        UserInfo = new UserInfoLightModel()
-                        {
-                            Id = recepie.UserInfo.Id,
-                            Nickname = recepie.UserInfo.Nickname,
-                            PictureUrl = recepie.UserInfo.PictureUrl
-                        },
-                        RecepiePhases = recepie.Phases
-                            .Select(RecepiePhaseModel.FromDbModel.Compile())
-                            .OrderBy(ph => ph.NumberOfPhase),
-                        Tags = recepie.Tags
-                            .Select(TagModel.FromDbModel.Compile())
-                            .OrderBy(t => t.Name),
-                        Comments = recepie.Comments
-                            .Select(RecepieCommentModel.FromDbModel.Compile())
-                            .OrderBy(c => c.Date),
-                        UsersFavouritedThisRecepie = recepie.UsersFavouritedThisRecepie
-                            .Select(fav => fav.UserInfo)
-                            .Select(UserInfoLightModel.FromDbModel.Compile())
-                            .OrderBy(u => u.Nickname)
-                    };
-                return Request.CreateResponse(HttpStatusCode.OK, result);
-                }
-                else
-	            {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The recepie was not found");
-	            }
+                        Id = recepie.UserInfo.Id,
+                        Nickname = recepie.UserInfo.Nickname,
+                        PictureUrl = recepie.UserInfo.PictureUrl
+                    },
+                    RecepiePhases = recepie.Phases
+                        .Select(RecepiePhaseModel.FromDbModel.Compile())
+                        .OrderBy(ph => ph.NumberOfPhase),
+                    Tags = recepie.Tags
+                        .Select(TagModel.FromDbModel.Compile())
+                        .OrderBy(t => t.Name),
+                    Comments = recepie.Comments
+                        .Select(RecepieCommentModel.FromDbModel.Compile())
+                        .OrderBy(c => c.Date),
+                    UsersFavouritedThisRecepie = recepie.UsersFavouritedThisRecepie
+                        .Select(fav => fav.UserInfo)
+                        .Select(UserInfoLightModel.FromDbModel.Compile())
+                        .OrderBy(u => u.Nickname)
+                };
+            return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
+	        {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The recepie was not found");
+	        }
         }
 
         
         // GET api/recepies/minutes/5
         [HttpGet]
-        public HttpResponseMessage Minutes(int recepieId, string nickname, string sessionKey)
+        public HttpResponseMessage Minutes(int recepieId)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
+            var recepies = this.Repository.All();
+            var recepie = recepies.FirstOrDefault(u => u.Id == recepieId);
+            if (recepie != null)
             {
-                var recepies = this.Repository.All();
-                var recepie = recepies.FirstOrDefault(u => u.Id == recepieId);
-                if (recepie != null)
+                int totalTime = 0;
+                foreach (var phase in recepie.Phases.Select(p => p.Minutes))
                 {
-                    int totalTime = 0;
-                    foreach (var phase in recepie.Phases.Select(p => p.Minutes))
-                    {
-                        totalTime += phase;
-                    }
-
-                    return Request.CreateResponse(HttpStatusCode.OK, totalTime);
+                    totalTime += phase;
                 }
-                else
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The recepie was not found");
-                }
+                return Request.CreateResponse(HttpStatusCode.OK, totalTime);
             }
             else
             {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The recepie was not found");
             }
         }
 

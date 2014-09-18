@@ -15,35 +15,19 @@ namespace RecepiesApp.Services.Controllers
     public class FavouritesController  : ApiController
     {
         [HttpGet]
-        public HttpResponseMessage ByUser(int userId, string nickname, string sessionKey)
+        public HttpResponseMessage ByUser(int userId)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var items = this.Repository.All().Where(c => c.UserInfoId == userId).Select(fav => fav.Recepie);
-                var results = items.Select(RecepieLightModel.FromDbModel);
-                return Request.CreateResponse(HttpStatusCode.OK, results);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
+            var items = this.Repository.All().Where(c => c.UserInfoId == userId).Select(fav => fav.Recepie);
+            var results = items.Select(RecepieLightModel.FromDbModel);
+            return Request.CreateResponse(HttpStatusCode.OK, results);
         }
         
         [HttpGet]
-        public HttpResponseMessage ByRecepie(int recepieId, string nickname, string sessionKey)
+        public HttpResponseMessage ByRecepie(int recepieId)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var items = this.Repository.All().Where(c => c.RecepieId == recepieId).Select(f => f.UserInfo);
-                var results = items.Select(UserInfoLightModel.FromDbModel);
-                return Request.CreateResponse(HttpStatusCode.OK, results);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
+            var items = this.Repository.All().Where(c => c.RecepieId == recepieId).Select(f => f.UserInfo);
+            var results = items.Select(UserInfoLightModel.FromDbModel);
+            return Request.CreateResponse(HttpStatusCode.OK, results);
         }
 
         [HttpPost]

@@ -16,34 +16,17 @@ namespace RecepiesApp.Services.Controllers
     {
         
         [HttpGet]
-        public HttpResponseMessage All(string nickname, string sessionKey)
+        public HttpResponseMessage All()
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var results = this.Repository.All().Select(TagModel.FromDbModel);
-                return Request.CreateResponse(HttpStatusCode.OK, results);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
+            var results = this.Repository.All().Select(TagModel.FromDbModel);
+            return Request.CreateResponse(HttpStatusCode.OK, results);
         }
 
         [HttpGet]
-        public HttpResponseMessage Select(int id, string nickname, string sessionKey)
+        public HttpResponseMessage Select(int id)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var tag = this.Repository.All().Select(TagModel.FromDbModelWithRecepies).FirstOrDefault(t => t.Id == id);
-                return Request.CreateResponse(HttpStatusCode.OK, tag);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
-
+            var tag = this.Repository.All().Select(TagModel.FromDbModelWithRecepies).FirstOrDefault(t => t.Id == id);
+            return Request.CreateResponse(HttpStatusCode.OK, tag);
         }
 
         [HttpPost]

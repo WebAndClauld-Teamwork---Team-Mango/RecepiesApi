@@ -16,48 +16,24 @@ namespace RecepiesApp.Services.Controllers
     {
         
         [HttpGet]
-        public HttpResponseMessage All(string nickname, string sessionKey)
+        public HttpResponseMessage All()
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var results = this.Repository.All().Select(RecepiePhaseModel.FromDbModel);
-                return Request.CreateResponse(HttpStatusCode.OK, results);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
+            var results = this.Repository.All().Select(RecepiePhaseModel.FromDbModel);
+            return Request.CreateResponse(HttpStatusCode.OK, results);
         }
 
         [HttpGet]
-        public HttpResponseMessage ByRecepie(int recepieId, string nickname, string sessionKey)
+        public HttpResponseMessage ByRecepie(int recepieId)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var results = this.Repository.All().Where(p => p.RecepieId == recepieId).Select(RecepiePhaseModel.FromDbModel);
-                return Request.CreateResponse(HttpStatusCode.OK, results);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
+            var results = this.Repository.All().Where(p => p.RecepieId == recepieId).Select(RecepiePhaseModel.FromDbModel);
+            return Request.CreateResponse(HttpStatusCode.OK, results);
         }
 
         [HttpGet]
-        public HttpResponseMessage Select(int id, string nickname, string sessionKey)
+        public HttpResponseMessage Select(int id)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var phase = this.Repository.All().Select(RecepiePhaseModel.FromDbModel).FirstOrDefault(t => t.Id == id);
-                return Request.CreateResponse(HttpStatusCode.OK, phase);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
+            var phase = this.Repository.All().Select(RecepiePhaseModel.FromDbModel).FirstOrDefault(t => t.Id == id);
+            return Request.CreateResponse(HttpStatusCode.OK, phase);
         }
 
         [HttpPost]
