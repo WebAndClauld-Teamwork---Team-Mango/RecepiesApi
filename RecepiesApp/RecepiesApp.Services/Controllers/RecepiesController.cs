@@ -102,6 +102,7 @@ namespace RecepiesApp.Services.Controllers
         public HttpResponseMessage Add([FromBody]
                                        Recepie value)
         {
+            value.Date = DateTime.Now;
             this.Repository.Add(value);
             this.Repository.SaveChanges();
             return Request.CreateResponse(HttpStatusCode.OK);
