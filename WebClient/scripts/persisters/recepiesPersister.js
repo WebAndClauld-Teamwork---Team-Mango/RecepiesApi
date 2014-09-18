@@ -6,9 +6,9 @@ define(['jquery','restHelper'/*dependencies*/], function ($,RESThelper) {
 	        
 	        function loadAllRecepies(){
 	        	var url=endpoint+'/all';
-	        	this.rest.getJSON(url,{}).success(function(data){
+	        	this.rest.getJSON(url,function(data){
 	        		console.log(data);
-	        	}).error(function(responce){
+	        	}, function(responce){
 	        		console.log(responce);
 	        	});
 	        }               

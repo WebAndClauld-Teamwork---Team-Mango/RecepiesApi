@@ -11,10 +11,16 @@ define(['jquery'], function ($) {
             });
         }
         
-        function getJSON(url,data)
-        {
-            var rtype='get';
-            return doAJAXRequest(rtype,url,data,'application/json');
+
+        function getJSON(url, success, error) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                contentType: 'application/json',
+                timeout: 10000,
+                success: success,
+                error: error
+            })
         }
         
         function postJSON(url,data)

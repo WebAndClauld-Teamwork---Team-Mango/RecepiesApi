@@ -6,12 +6,13 @@
             'sammy' : 'libs/sammy-latest.min',
             'handlebars':'libs/handlebars',
             'requestModule' : 'libs/requestModule',
+            //controllers
             'mainController' : 'controllers/mainController',
             'recipesController':'controllers/recipesController',
             //configs
             'constants':'configs/constants',
             //persisters
-            'recipesPersister':'persisters/recepiesPersister',
+            'recepiesPersister':'persisters/recepiesPersister',
             //entities
             'recipe':'entities/recipe',
             //helpers
@@ -21,8 +22,10 @@
         }
     });
 
-    require(['recipesPersister','recipesController','sammy','recipe'], function (RecipesPersister,RecipesController,sammy,Recipe) {
-
+    require(['recepiesPersister','recipesController','sammy','recipe','constants'], function (RecepiesPersister,RecipesController,sammy,Recipe) {
+        //enable cors for app
+        $.support.cors=true;
+        
         //main content container
         var contentSelector='#content-box';
 
@@ -42,6 +45,9 @@
                     'recepies':recepies
                 };
                 //
+                var th=RecepiesPersister(RECEPIES_ENDPOINT);
+                th.loadAllRecepies();
+                //
                 recepiesController.generateThumbnails(data);
             });
 
@@ -55,7 +61,7 @@
             });
 
             //new recipe page
-            this.get("#/recipes/new", function() {
+            this.get("#/recipes/new", function() {                            
                 $(contentSelector).load(INSERT_RECIPE_PAGE,function(){                                        
                     //get recipe from rest by id                    
                 });       

@@ -8,4 +8,3 @@ var RECEPIES_TEMPLATE=TEMPLATES_DIR+'recipesTemplate.html';
 var RECEPIE_TEMPLATE=TEMPLATES_DIR+'recipeTemplate.html';
 var RECIPE_PAGE=PAGES_DIR+'recipe.html';
 var INSERT_RECIPE_PAGE=PAGES_DIR+'insertRecipe.html';
-
