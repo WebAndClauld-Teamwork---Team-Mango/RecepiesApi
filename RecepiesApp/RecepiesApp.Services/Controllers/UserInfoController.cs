@@ -34,7 +34,7 @@ namespace RecepiesApp.Services.Controllers
                 {
                     Id = user.Id,
                     Description = user.Description,
-                    Nickname = user.Description,
+                    Nickname = user.Nickname,
                     PictureUrl = user.PictureUrl,
                     FavouriteRecepies = user.FavouriteRecepies
                         .Select(f => f.Recepie)
