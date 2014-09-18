@@ -45,7 +45,14 @@ namespace RecepiesApp.Services.Models
             }
             set 
             {
-                this.description = value.Substring(0, 100);
+                if (value.Length > 100)
+                {
+                    this.description = value.Substring(0, 100);
+                }
+                else 
+                {
+                    this.description = value;
+                }
             }
         }
        

@@ -6,6 +6,7 @@
             'sammy' : 'libs/sammy-latest.min',
             'handlebars':'libs/handlebars',
             'requestModule' : 'libs/requestModule',
+            'underscore':'libs/underscore-min',
             //controllers
             'mainController' : 'controllers/mainController',
             'recipesController':'controllers/recipesController',
@@ -13,16 +14,26 @@
             'constants':'configs/constants',
             //persisters
             'recepiesPersister':'persisters/recepiesPersister',
+            'tagsPersister':'persisters/tagsPersister',
             //entities
             'recipe':'entities/recipe',
             //helpers
             'restHelper':'helpers/restHelper',
             'requestModule':'helpers/requestModule',
             'fileHelper':'helpers/fileHelper'
+        },
+        shim: {
+            "underscore": {exports: "_"}
         }
     });
 
-    require(['recepiesPersister','recipesController','sammy','recipe','constants'], function (RecepiesPersister,RecipesController,sammy,Recipe) {
+    require(['underscore',
+        'recepiesPersister',
+        'tagsPersister',
+        'recipesController',
+        'sammy',
+        'recipe',
+        'constants'], function (_,RecepiesPersister,TagsPersister,RecipesController,sammy,Recipe) {
         //enable cors for app
         $.support.cors=true;
         
@@ -35,13 +46,17 @@
             this.get("#/recipes", function() { 
                 var recepiesController=new RecipesController(RECEPIES_ENDPOINT);
                 //
-                var recepiesPersister=new RecepiesPersister(RECEPIES_ENDPOINT);
-                recepiesPersister.loadAllRecepies(function(results){
-                    var data={'recepies':results};
+                var tagsPersister=new TagsPersister(TAGS_ENDPOINT);
+                tagsPersister.loadAllTags(function(data){
+                    //console.log(data);
                     //
-                    recepiesController.generateThumbnails(data);        
-                });
-                //                
+                    var recepiesPersister=new RecepiesPersister(RECEPIES_ENDPOINT);
+                    //
+                    recepiesPersister.loadAllRecepies(function(results){
+                        var data={'recepies':results};                    
+                        recepiesController.generateThumbnails(data);        
+                    });
+                });            
             });
 
             this.get("#/recipe/:id",function(){

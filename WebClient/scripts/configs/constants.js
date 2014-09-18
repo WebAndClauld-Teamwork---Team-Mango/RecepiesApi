@@ -1,6 +1,7 @@
 //ENDPOINTS
 var ROOT_URL='http://localhost:1937/api/';    
 var RECEPIES_ENDPOINT = ROOT_URL+'recepies';
+var TAGS_ENDPOINT = ROOT_URL+'tags';
 //PAGES AND TEMPLATES
 var PAGES_DIR='pages/';
 var TEMPLATES_DIR=PAGES_DIR+'templates/';
