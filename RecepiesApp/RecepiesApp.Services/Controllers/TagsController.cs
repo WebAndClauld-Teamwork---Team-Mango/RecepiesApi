@@ -63,50 +63,36 @@ namespace RecepiesApp.Services.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage Edit(int id, [FromBody]TagModel value, string nickname, string sessionKey)
+        [Authorize(Roles="Admin")]
+        public HttpResponseMessage Edit(int id, [FromBody]TagModel value)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
+            var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
+            if (item != null)
             {
-                var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
-                if (item != null)
-                {
-                    item.Name = value.Name;
-                    this.Repository.SaveChanges();
-                    return Request.CreateResponse(HttpStatusCode.OK);
-                }
-                else
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The comment was not found");
-                }
+                item.Name = value.Name;
+                this.Repository.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             else
             {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The comment was not found");
             }
         }
 
         [HttpDelete]
-        public HttpResponseMessage Delete(int id, string nickname, string sessionKey)
+        [Authorize(Roles="Admin")]
+        public HttpResponseMessage Delete(int id)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
+            var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
+            if (item != null)
             {
-                var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
-                if (item != null)
-                {
-                    item.IsDeleted = true;
-                    this.Repository.SaveChanges();
-                    return Request.CreateResponse(HttpStatusCode.OK);
-                }
-                else
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The comment was not found");
-                }
+                item.IsDeleted = true;
+                this.Repository.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             else
             {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The comment was not found");
             }
         }
         

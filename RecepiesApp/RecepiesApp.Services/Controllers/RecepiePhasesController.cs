@@ -66,6 +66,17 @@ namespace RecepiesApp.Services.Controllers
             KeyValuePair<HttpStatusCode, string> messageIfUserError;
             if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
             {
+                var recepie = this.Data.Recepies.All().FirstOrDefault(r=>r.Id == value.RecepieId);
+
+                if (recepie == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No such recepie was found");
+                }
+                if (recepie.UserInfo.Nickname != nickname)
+                {
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, "A user can only add phases to his/her own recepie");
+                }
+
                 this.Repository.Add(value);
                 this.Repository.SaveChanges();
                 return Request.CreateResponse(HttpStatusCode.OK);
@@ -85,6 +96,11 @@ namespace RecepiesApp.Services.Controllers
                 var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
                 if (item != null)
                 {
+                    if (item.Recepie.UserInfo.Nickname != nickname)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.Forbidden, "A user can only edit phases of his/her own recepie");
+                    }
+
                     item.IsImportnt = value.IsImportnt;
                     item.Minutes = value.Minutes;
                     item.Name = value.Name;
@@ -113,6 +129,11 @@ namespace RecepiesApp.Services.Controllers
                 var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
                 if (item != null)
                 {
+                    if (item.Recepie.UserInfo.Nickname != nickname)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.Forbidden, "A user can only delete phases of his/her own recepie");
+                    }
+
                     item.IsDeleted = true;
                     this.Repository.SaveChanges();
                     return Request.CreateResponse(HttpStatusCode.OK);

@@ -86,6 +86,17 @@ namespace RecepiesApp.Services.Controllers
             KeyValuePair<HttpStatusCode, string> messageIfUserError;
             if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
             {
+                var user = this.Data.UserInfos.All().FirstOrDefault(u=>u.Id == value.UserInfoId);
+                if (user == null || user.Nickname != nickname)
+                {
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, "A user can only post his/her own comments");
+                }
+                
+                if (this.Data.UserInfos.All().FirstOrDefault(u=>u.Id == value.RecepieId) == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No such recepie");
+                }
+
                 this.Repository.Add(value);
                 this.Repository.SaveChanges();
                 return Request.CreateResponse(HttpStatusCode.OK);
@@ -105,10 +116,12 @@ namespace RecepiesApp.Services.Controllers
                 var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
                 if (item != null)
                 {
+                    if (item.UserInfo.Nickname != nickname)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.Forbidden, "A user can only edit his/her own comments");
+                    }
+
                     item.Content = value.Content;
-                    item.Date = value.Date;
-                    item.RecepieId = value.RecepieId;
-                    item.UserInfoId = value.UserInfoId;
 
                     this.Repository.SaveChanges();
                     return Request.CreateResponse(HttpStatusCode.OK);
@@ -133,6 +146,11 @@ namespace RecepiesApp.Services.Controllers
                 var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
                 if (item != null)
                 {
+                    if (item.UserInfo.Nickname != nickname)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.Forbidden, "A user can only delete his/her own comments");
+                    }
+
                     item.IsDeleted = true;
                     this.Repository.SaveChanges();
                     return Request.CreateResponse(HttpStatusCode.OK);

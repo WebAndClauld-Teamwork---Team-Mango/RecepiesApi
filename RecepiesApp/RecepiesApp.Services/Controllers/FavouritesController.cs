@@ -52,6 +52,12 @@ namespace RecepiesApp.Services.Controllers
             KeyValuePair<HttpStatusCode, string> messageIfUserError;
             if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
             {
+                var user = this.Data.UserInfos.All().FirstOrDefault(u=>u.Id == value.UserInfoId);
+                if (user == null || user.Nickname != nickname)
+                {
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, "A user can only favourite a recepie for himself/herself");
+                }
+
                 this.Repository.Add(value);
                 this.Repository.SaveChanges();
                 return Request.CreateResponse(HttpStatusCode.OK);
@@ -71,6 +77,12 @@ namespace RecepiesApp.Services.Controllers
                 var recepie = this.Repository.All().FirstOrDefault(u => u.Id == id);
                 if (recepie != null)
                 {
+                    var user = this.Data.UserInfos.All().FirstOrDefault(u=>u.Id == recepie.UserInfoId);
+                    if (user == null || user.Nickname != nickname)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.Forbidden, "A user can only delete his/her own favourites");
+                    }
+
                     recepie.IsDeleted = true;
                     this.Repository.SaveChanges();
                     return Request.CreateResponse(HttpStatusCode.OK);

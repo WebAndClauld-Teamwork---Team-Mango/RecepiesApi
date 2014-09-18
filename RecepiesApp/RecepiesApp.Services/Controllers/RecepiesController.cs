@@ -122,6 +122,12 @@ namespace RecepiesApp.Services.Controllers
             KeyValuePair<HttpStatusCode, string> messageIfUserError;
             if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
             {
+                var user = this.Data.UserInfos.All().FirstOrDefault(u=>u.Id == value.UserInfoId);
+                if (user == null || user.Nickname != nickname)
+                {
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, "A user can only add a recepie for himself/herself");
+                }
+
                 value.Date = DateTime.Now;
                 this.Repository.Add(value);
                 this.Repository.SaveChanges();
@@ -143,6 +149,10 @@ namespace RecepiesApp.Services.Controllers
                 var recepie = this.Repository.All().FirstOrDefault(u => u.Id == id);
                 if (recepie != null)
                 {
+                    if (recepie.UserInfo.Nickname != nickname)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.Forbidden, "A user can only edit his/her own recepies");
+                    }
                     recepie.Date = value.Date;
                     recepie.Description = value.Description;
                     recepie.Name = value.Name;
@@ -172,6 +182,11 @@ namespace RecepiesApp.Services.Controllers
                 var recepie = this.Repository.All().FirstOrDefault(u => u.Id == id);
                 if (recepie != null)
                 {
+                    if (recepie.UserInfo.Nickname != nickname)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.Forbidden, "A user can only delete his/her own recepies");
+                    }
+
                     recepie.IsDeleted = true;
                     this.Repository.SaveChanges();
                     return Request.CreateResponse(HttpStatusCode.OK);
