@@ -188,11 +188,13 @@ footer {
 
 /* USER PAGE */
 #user-box {
-    width: 950px;
+    width: 760px;
     padding: 20px;
+    border: 1px solid lightgray;
 }
 #user-box .user-avatar {
     margin: 0 20px 0 0px;
+    max-width: 100px;
     float:left;
 }
 
@@ -208,6 +210,12 @@ footer {
     margin: 10px auto;
 }
 
+#user-box p{
+    max-width:700px;
+    overflow: auto;
+}
+
+
 #user-box #favourites-container {
     float: left;
     border: 1px solid #000;
@@ -222,7 +230,7 @@ footer {
 
 #user-box #user-recipes-container {
     float: left;
-    width: 700px;
+    width: 496px;
 }
 
 /* USER PAGE END */

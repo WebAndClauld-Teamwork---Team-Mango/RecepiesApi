@@ -30,6 +30,26 @@ define(['jquery', 'requestModule','fileHelper','handlebars','constants'], functi
                 //
             },
 
+            generateSingleUser:function(data){
+                //
+                function fillContentBoxWithUserInfo(template){
+                    var userInfoContainer = $("#content-box");
+                    userInfoContainer.children().remove();
+                    //                    
+                    var generateUserData = Handlebars.compile(template);
+                    //
+                    userInfoContainer.html(generateUserData(data));
+                }
+
+                var fileHelper=new FileHelper();
+                fileHelper.loadTextFile(USER_PAGE_TEMPLATE,function(result){
+                    fillContentBoxWithUserInfo(result);
+                },function(error){
+                    //report errors here...
+                    console.log(error);
+                });
+            },
+
             generateUsersList: function(data){
                 
                 function fillUsersList(template)

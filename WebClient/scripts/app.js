@@ -40,7 +40,8 @@
         //enable cors for app
         $.support.cors=true;
         
-        //main content container
+        //main content containers
+        var pageContent='#page-content';
         var contentSelector='#content-box';
 
         function loadUsers(onSuccess,onFail){
@@ -64,7 +65,7 @@
             //
             loadUsers(function(users){
                 //                    
-                //console.log(data);                    
+                //console.log(data);     
                 var recepiesPersister=new RecepiesPersister(RECEPIES_ENDPOINT);
                 //
                 recepiesController.generateUsersList({'users':users});
@@ -92,7 +93,7 @@
                     }         
                     //
                     var data={'recepies':readyResults};           
-                    recepiesController.generateThumbnails(data);        
+                    recepiesController.generateThumbnails(data);           
                 });
             }); 
         }
@@ -116,25 +117,49 @@
                 showRecipesPage({'filterQuery':query});                
             });
 
+
+            //show user info
+            this.get("#/user/:id",function(){
+                function fillUserInfoPage(data)
+                {
+                    loadUsers(function(users){
+                        var recipesController=new RecipesController(RECEPIES_ENDPOINT);
+                        //
+                        recipesController.generateUsersList({'users':users});
+                        recipesController.generateSingleUser(data);
+                    });
+                }
+
+                var userId=this.params['id'];
+                //
+                var usersPersister=new UsersPersister(USERS_ENDPOINT);
+                usersPersister.loadUser(userId,function(user){
+                    var data={'user':user};
+                    fillUserInfoPage(data);
+                },function(error){                    
+                    //log errors here...
+                    console.log(error);
+                });
+            });
+
+            //show recipe
             this.get("#/recipe/:id",function(){
                 //get recipe id
                 var recipeId=this.params['id'];
 
                 function loadRecipePage(recipeObj,users)
                 {
-                    $(contentSelector).load(RECIPE_PAGE,function(){                                        
+                    $(contentSelector).load(RECIPE_PAGE,function(){          
+                        //                              
                         var recipesController=new RecipesController(RECEPIES_ENDPOINT);
-
                         recipesController.generateUsersList({'users':users});
-
-                        recipesController.generateSingleRecipe(recipeObj);
+                        recipesController.generateSingleRecipe(recipeObj);                       
                     });
                 }
 
                 var recepiesPersister=new RecepiesPersister(RECEPIES_ENDPOINT);
                 //
                 loadUsers(function(users){
-
                     //
                     recepiesPersister.loadRecipe(recipeId,function(data){                               
                         loadRecipePage(data,users);
@@ -146,7 +171,7 @@
             });
 
             //new recipe page
-            this.get("#/recipes/new", function() {                            
+            this.get("#/recipes/new", function() {                     
                 $(contentSelector).load(INSERT_RECIPE_PAGE,function(){                                        
                     //get recipe from rest by id                    
                 });       
@@ -158,22 +183,23 @@
                 //              
             });                                            
         });
-        //run application
-        app.run("#/recipes");     
 
-        //events
+        //run application
         $(document).ready(function(){
-            $('#search-submit').click(function(){
-                var queryStr=$('#tb-search').val();
-                if((queryStr+'').length>0)
-                {
-                    window.location.href='#/recipes/filter/'+queryStr;
-                }
-                else
-                {
-                    window.location.href='#/recipes';
-                }
-            }); 
-        });    
+        app.run("#/recipes");     
+        });        
+
+        //events   
+        $('#search-submit').click(function(){
+            var queryStr=$('#tb-search').val();
+            if((queryStr+'').length>0)
+            {
+                window.location.href='#/recipes/filter/'+queryStr;
+            }
+            else
+            {
+                window.location.href='#/recipes';
+            }
+        });  
     });
 }());

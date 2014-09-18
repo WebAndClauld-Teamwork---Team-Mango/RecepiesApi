@@ -1,7 +1,7 @@
 {{#recipe}}
 	<aside>
 		<img src="{{PictureUrl}}" alt="{{Name}}"/>
-		<span>Author: </span> <strong><a href="#">{{#with UserInfo}}{{Nickname}}{{/with}}</a></strong><br/>
+		<span>Author: </span> <strong>{{#with UserInfo}}<a href="#/user/{{Id}}">{{Nickname}}{{/with}}</a></strong><br/>
 		<span>Published on: </span> <strong><a href="#">{{Date}}</a></strong><br/>
 		<div class="taglist">
 			<span>Tags:</span>
@@ -36,7 +36,7 @@
 		{{#with this}}
 		<li class="comment-box">
 		<div>
-			<header> [<a href="#">{{Nickname}}</a>] {{Date}}</header>
+			<header> [<a href="#/user/{{UserInfoId}}">{{Nickname}}</a>] {{Date}}</header>
 			<p>{{Content}}</p>
 			<p><a href="#">Цитирай</a> | <a href="#">Докладвай!</a> | <a href="#">Редактирай </a> | <a href="#">Изтрий!</a></p>
 		</div>
