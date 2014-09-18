@@ -8,6 +8,7 @@ using RecepiesApp.Data;
 using RecepiesApp.Data.Repository;
 using RecepiesApp.Models;
 using RecepiesApp.Services.Models;
+using RecepiesApp.Services.Notifications;
 using RecepiesApp.Services.Validators;
 
 namespace RecepiesApp.Services.Controllers
@@ -64,13 +65,26 @@ namespace RecepiesApp.Services.Controllers
                     return Request.CreateResponse(HttpStatusCode.Forbidden, "A user can only post his/her own comments");
                 }
                 
-                if (this.Data.UserInfos.All().FirstOrDefault(u=>u.Id == value.RecepieId) == null)
+                if (this.Data.Recepies.All().FirstOrDefault(r=>r.Id == value.RecepieId) == null)
                 {
                     return Request.CreateResponse(HttpStatusCode.NotFound, "No such recepie");
                 }
 
                 this.Repository.Add(value);
                 this.Repository.SaveChanges();
+                var notifyNickname = this.Repository.All()
+                    .Where(rc => rc.RecepieId == value.RecepieId)
+                    .Select(r => r.Recepie.UserInfo.Nickname)
+                    .FirstOrDefault();
+                var notifyData = new
+                {
+                    Event = "NewComment",
+                    Nickname = nickname,
+                    Content = value.Content,
+                    UserInfoId = user.Id,
+                    RecepieId = value.RecepieId
+                };
+                new Notifier().Notify(notifyNickname, notifyData);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             else
