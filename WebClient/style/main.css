@@ -33,7 +33,7 @@ aside ul {
     margin: 0;
     padding: 0;
     list-style: none;
-    width: 175px;
+    width: 175px;    
 }
 aside ul li {
     margin: 0;
@@ -43,6 +43,7 @@ aside ul li button {
     width: 80%;
     cursor: pointer;
     height: 35px;
+    font-size: 11px;
     margin: 10px 0 0 20px;
 }
 
@@ -56,7 +57,7 @@ section {
 }
 
 section #breadcrumbs-box {
-    width: 590px;
+    width: 540px;
     border: 1px solid #000;
     float: left;
     padding: 5px;
@@ -64,12 +65,16 @@ section #breadcrumbs-box {
     margin-left: 10px;
 }
 
-section #tb-search {
+section #tb-search,#search-submit {
     border: 1px solid #000;
     float: left;
     padding: 6px;
     margin: 10px 0 0 14px;
     height: 23px;
+}
+
+section #search-submit {
+    height: 37px;
 }
 
 #content-box {

@@ -30,23 +30,23 @@ define(['jquery', 'requestModule','fileHelper','handlebars','constants'], functi
                 //
             },
 
-            generateTagsList: function(data){
+            generateUsersList: function(data){
                 
-                function fillTagsList(template)
+                function fillUsersList(template)
                 {
-                    var tagsListContainer = $("#tags-list");
-                    var generateTagsList= Handlebars.compile(template);
-                    // empty the container    
-                    tagsListContainer.children().remove();
-                    //fill container with recepies
-                    tagsListContainer.html(generateTagsList(data));
+                    var usersListContainer = $("#users-list");
+                    var generateUsersList= Handlebars.compile(template);
+                    //   
+                    usersListContainer.children().remove();
+                    //
+                    usersListContainer.html(generateUsersList(data));
                 }
                 //
                 //create file helper
                 var fileHelper=new FileHelper();
                 //read tags list template
-                fileHelper.loadTextFile(TAGS_LIST_TEMPLATE,function(result){
-                    fillTagsList(result);
+                fileHelper.loadTextFile(USERS_LIST_TEMPLATE,function(result){
+                    fillUsersList(result);
                 },function(error){
                     //report error here...
                     console.log(error);
