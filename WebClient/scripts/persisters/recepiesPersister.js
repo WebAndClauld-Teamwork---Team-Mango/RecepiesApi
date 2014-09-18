@@ -17,7 +17,7 @@ define(['jquery','restHelper'/*dependencies*/], function ($,RESThelper) {
         				onFail(responce);
         			}
         		});
-        	}
+        	}        	
 
 	        function loadAllRecepies(onSuccess,onFail){
 	        	var url=endpoint+'/all';

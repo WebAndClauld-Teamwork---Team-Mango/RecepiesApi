@@ -51,8 +51,7 @@ define(['jquery', 'requestModule','fileHelper','handlebars','constants'], functi
                 {
                     var recipeContainer = $("#content-box");
                     var generateRecipe = Handlebars.compile(template);
-                    // empty the container
-                    console.log(template);
+                    // empty the container                   
                     recipeContainer.children().remove();
                     //fill the container
                     recipeContainer.html(generateRecipe({'recipe':recipeObj}));

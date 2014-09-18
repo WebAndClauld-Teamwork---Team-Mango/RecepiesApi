@@ -13,14 +13,14 @@ namespace RecepiesApp.Data
 {
     public class RecepiesDbContext : IdentityDbContext<ApplicationUser>, IRecepiesDbContext
     {
-        //public RecepiesDbContext()
-        //    : this("AppHarbor")
-        //{
-        //}
         public RecepiesDbContext()
-            : this(@"Server=.;Database=RecepiesAppDatabase;Trusted_Connection=True;")
+            : this("AppHarbor")
         {
         }
+        //public RecepiesDbContext()
+        //    : this(@"Server=.;Database=RecepiesAppDatabase;Trusted_Connection=True;")
+        //{
+        //}
 
         public static RecepiesDbContext MsSqlExpressInstance()
         {
