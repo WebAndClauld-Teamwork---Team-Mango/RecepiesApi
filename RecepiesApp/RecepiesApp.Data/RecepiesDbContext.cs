@@ -14,7 +14,7 @@ namespace RecepiesApp.Data
     public class RecepiesDbContext : IdentityDbContext<ApplicationUser>, IRecepiesDbContext
     {
         public RecepiesDbContext()
-            : this("localhost")
+            : this("AppHarbor")
         {
         }
         //public RecepiesDbContext()

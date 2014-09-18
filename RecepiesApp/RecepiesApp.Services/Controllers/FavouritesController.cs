@@ -8,7 +8,6 @@ using RecepiesApp.Data.Repository;
 using RecepiesApp.Models;
 using RecepiesApp.Services.Models;
 using RecepiesApp.Services.Validators;
-using RecepiesApp.Services.Notifications;
 
 namespace RecepiesApp.Services.Controllers
 {
@@ -20,12 +19,9 @@ namespace RecepiesApp.Services.Controllers
             {
                 repository = new Repository<UserFavouriteRecepie>();
             }
-
-            this.notifier = new Notifier();
         }
 
         private static IRepository<UserFavouriteRecepie> repository;
-        private INotifier notifier;
         
         
         [HttpGet]
@@ -68,12 +64,7 @@ namespace RecepiesApp.Services.Controllers
             {
                 this.Repository.Add(value);
                 this.Repository.SaveChanges();
-                var notifyNickname = this.Repository.All()
-                    .Where(ufr => ufr.RecepieId == value.RecepieId)
-                    .Select(r => r.Recepie.UserInfo.Nickname)
-                    .FirstOrDefault();
-                var notificationResult = this.notifier.Notify(notifyNickname, value);
-                return Request.CreateResponse(HttpStatusCode.OK, notificationResult);
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             else
             {
