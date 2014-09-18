@@ -45,16 +45,24 @@ define(['jquery', 'requestModule','fileHelper','handlebars','constants'], functi
                 });*/
             },
 			
-			generateSingleRecipe:function(data)
+			generateSingleRecipe:function(recipeObj)
 			{
-				var recipeListContainer = $("#content-box");
-				var generateRecipe = Handlebars.compile($('#recipe-template').html());
-				// empty the container
-				while (recipeListContainer.firstChild) {
-					recipeListContainer.removeChild(recipeListContainer.firstChild);
-				}
-				
-				recipeListContainer.html(generateRecipe(data));
+                function fillPageWithRecipeData(template)
+                {
+                    var recipeContainer = $("#content-box");
+                    var generateRecipe = Handlebars.compile(template);
+                    // empty the container
+                    console.log(template);
+                    recipeContainer.children().remove();
+                    //fill the container
+                    recipeContainer.html(generateRecipe({'recipe':recipeObj}));
+                }
+                //load template
+                var fileHelper=new FileHelper();
+                //read recipes template and fill recipes
+                fileHelper.loadTextFile(RECEPIE_TEMPLATE,function(result){
+                    fillPageWithRecipeData(result);
+                });
 			}
         };
 

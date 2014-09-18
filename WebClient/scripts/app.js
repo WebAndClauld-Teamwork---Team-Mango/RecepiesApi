@@ -34,18 +34,8 @@
             //recepies page
             this.get("#/recipes", function() { 
                 var recepiesController=new RecipesController(RECEPIES_ENDPOINT);
-                //template test
-                var recepies=[];
-                for(var i=0;i<10;i++){
-                    var time=((Math.random()*180)+10)|0;
-                    recepies.push(new Recipe(i,'recipe '+i,'recipe desc'+i,'images/thumbnails/food-image-1.jpg',time));
-                }
                 //
-                var data={
-                    'recepies':recepies
-                };
-                //
-                var recepiesPersister=RecepiesPersister(RECEPIES_ENDPOINT);
+                var recepiesPersister=new RecepiesPersister(RECEPIES_ENDPOINT);
                 recepiesPersister.loadAllRecepies(function(results){
                     var data={'recepies':results};
                     //
@@ -56,11 +46,24 @@
 
             this.get("#/recipe/:id",function(){
                 //get recipe id
-                var recipeId=this.params['id'];  
-                $(contentSelector).load(RECIPE_PAGE,function(){                                        
-                    //get recipe from rest by id
-                    console.log(recipeId);
-                });
+                var recipeId=this.params['id'];
+
+                function loadRecipePage(recipeObj)
+                {
+                    $(contentSelector).load(RECIPE_PAGE,function(){                                        
+                        var recipesController=new RecipesController(RECEPIES_ENDPOINT);
+                        recipesController.generateSingleRecipe(recipeObj);
+                    });
+                }
+
+                var recepiesPersister=new RecepiesPersister(RECEPIES_ENDPOINT);
+                //
+                recepiesPersister.loadRecipe(recipeId,function(data){                               
+                    loadRecipePage(data);
+                },function(error){
+                    //report errors here
+                    console.log(error);
+                });                
             });
 
             //new recipe page
