@@ -66,6 +66,78 @@ namespace RecepiesApp.Services.Controllers
 	        }
         }
 
+
+        [HttpPost]
+        public HttpResponseMessage Register([FromBody]UserInfoLoginModel value) 
+        {
+            if (this.Repository.All().Any(u => u.Nickname == value.Nickname))
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The user name is already taken");
+            }
+            
+            if (!value.AuthCode.StartsWith(value.Nickname))
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid AuthCode");
+            }
+
+            if (value.AuthCode.Length - 6 < value.Nickname.Length)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The password is not long enough. Minimum 6 symbols");
+            }
+
+            string sessionKey = Guid.NewGuid().ToString();
+            this.Repository.Add(new UserInfo() 
+            {
+                Nickname = value.Nickname,
+                AuthCode = value.AuthCode,
+                SessionKey = sessionKey,
+                SessionExpirationDate = DateTime.Now.AddDays(1)
+            });
+            this.Repository.SaveChanges();
+            
+            return Request.CreateResponse(HttpStatusCode.OK, sessionKey);
+        }
+
+        [HttpPut]
+        public HttpResponseMessage Login([FromBody]UserInfoLoginModel value)
+        {
+            var user = this.Repository.All().FirstOrDefault(u =>
+                u.Nickname == value.Nickname &&
+                u.AuthCode == value.AuthCode);
+            if (user == null)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Incorrect password or username");
+            }
+            else
+            {
+                string sessionKey = Guid.NewGuid().ToString();
+                user.SessionKey = sessionKey;
+                user.SessionExpirationDate = DateTime.Now.AddDays(1);
+                return Request.CreateResponse(HttpStatusCode.OK, sessionKey);
+            }
+        }
+        
+        [HttpPut]
+        public HttpResponseMessage Logout([FromBody]UserInfoLoggedModel value)
+        {
+            var user = this.Repository.All().FirstOrDefault(u =>
+                u.Nickname == value.Nickname);
+            if (user == null)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No such user");
+            }
+            else if(user.SessionKey != value.SessionKey || user.SessionExpirationDate.CompareTo(DateTime.Now) < 0)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Not logged in");
+            }
+            else
+            {
+                user.SessionKey = "";
+                user.SessionExpirationDate = DateTime.Now.AddDays(-1);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+        }
+
         // POST api/userinfo
         [HttpPost]
         public HttpResponseMessage Add([FromBody]UserInfo value)

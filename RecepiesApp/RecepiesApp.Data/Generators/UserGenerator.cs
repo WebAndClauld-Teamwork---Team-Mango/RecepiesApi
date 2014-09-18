@@ -55,6 +55,8 @@
                 var newUser = new UserInfo
                 {
                     Nickname = uniqueName,
+                    AuthCode = uniqueName + "123456789",
+                    SessionExpirationDate = DateTime.Now.AddMinutes(-1),
                     Description = "Description: " + this.rdg.GenerateString(0, 1000),
                     PictureUrl = DefaultPicUrl
                 };

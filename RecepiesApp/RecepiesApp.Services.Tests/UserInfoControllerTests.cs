@@ -11,52 +11,52 @@ namespace RecepiesApp.Services.Tests
         [TestMethod]
         public void Add()
         {
-            using (new TransactionScope())
-            {
-                UserInfoController controller = new UserInfoController();
+            //using (new TransactionScope())
+            //{
+            //    UserInfoController controller = new UserInfoController();
 
-                //controller.Add();
-            }
+            //    //controller.Add();
+            //}
         }
         [TestMethod]
         public void Select()
         {
-            using (new TransactionScope())
-            {
-                UserInfoController controller = new UserInfoController();
+            //using (new TransactionScope())
+            //{
+            //    UserInfoController controller = new UserInfoController();
 
-                //controller.Select();
-            }
+            //    //controller.Select();
+            //}
         }
         [TestMethod]
         public void All()
         {
-            using (new TransactionScope())
-            {
-                UserInfoController controller = new UserInfoController();
+            //using (new TransactionScope())
+            //{
+            //    UserInfoController controller = new UserInfoController();
 
-                //controller.All();
-            }
+            //    //controller.All();
+            //}
         }
         [TestMethod]
         public void Delete()
         {
-            using (new TransactionScope())
-            {
-                UserInfoController controller = new UserInfoController();
+            //using (new TransactionScope())
+            //{
+            //    UserInfoController controller = new UserInfoController();
 
-                //controller.Delete();
-            }
+            //    //controller.Delete();
+            //}
         }
         [TestMethod]
         public void Edit()
         {
-            using (new TransactionScope())
-            {
-                UserInfoController controller = new UserInfoController();
+            //using (new TransactionScope())
+            //{
+            //    UserInfoController controller = new UserInfoController();
 
-                //controller.Edit();
-            }
+            //    //controller.Edit();
+            //}
         }
     }
 }

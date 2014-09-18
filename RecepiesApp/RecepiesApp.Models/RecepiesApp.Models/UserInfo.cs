@@ -31,6 +31,13 @@ namespace RecepiesApp.Models
         [Index(IsUnique=true)]
         public virtual string Nickname { get; set; }
 
+        [Required]
+        public virtual string AuthCode { get; set; }
+
+        public virtual string SessionKey { get; set; }
+
+        public virtual DateTime SessionExpirationDate { get; set; }
+
         public virtual string Description { get; set; }
         
         public virtual string PictureUrl { get; set; }
