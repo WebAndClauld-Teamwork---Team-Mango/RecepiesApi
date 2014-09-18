@@ -19,11 +19,8 @@ namespace RecepiesApp.Services.Controllers
         public HttpResponseMessage All()
         {
             var users = this.Repository.All();
-                
             var results = users.Select(UserInfoLightModel.FromDbModel);
-                
             results = results.OrderBy(user => user.Nickname);
-
             return Request.CreateResponse(HttpStatusCode.OK, results);
         }
         
@@ -37,7 +34,7 @@ namespace RecepiesApp.Services.Controllers
                 {
                     Id = user.Id,
                     Description = user.Description,
-                    Nickname = user.Description,
+                    Nickname = user.Nickname,
                     PictureUrl = user.PictureUrl,
                     FavouriteRecepies = user.FavouriteRecepies
                         .Select(f => f.Recepie)
@@ -66,12 +63,10 @@ namespace RecepiesApp.Services.Controllers
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The user name is already taken");
             }
-            
             if (!value.AuthCode.StartsWith(value.Nickname))
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid AuthCode");
             }
-
             if (value.AuthCode.Length - 6 < value.Nickname.Length)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The password is not long enough. Minimum 6 symbols");

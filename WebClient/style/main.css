@@ -180,3 +180,21 @@ footer {
 
 
 /*RECIPE END*/
+
+/* USER PAGE */
+#user-box {
+    width: 950px;
+    padding: 20px;
+}
+#user-box .user-avatar {
+    margin: 0 20px 0 0px;
+    float:left;
+}
+
+#user-box .user-recipe {
+    background: lightgray;
+    padding: 15px;
+    margin: 15px;
+}
+
+/* USER PAGE END */
