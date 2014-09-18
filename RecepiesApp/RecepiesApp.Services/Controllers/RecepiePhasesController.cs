@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using RecepiesApp.Data;
 using RecepiesApp.Data.Repository;
 using RecepiesApp.Models;
 using RecepiesApp.Services.Models;
@@ -11,61 +12,28 @@ using RecepiesApp.Services.Validators;
 
 namespace RecepiesApp.Services.Controllers
 {
-    public class RecepiePhasesController  : ApiController, IRepositoryHandler<RecepiePhase>
+    public class RecepiePhasesController  : ApiController
     {
-        public RecepiePhasesController() 
-        {
-            if (repository == null)
-            {
-                repository = new Repository<RecepiePhase>();
-            }
-        }
-
-        private static IRepository<RecepiePhase> repository;
         
         [HttpGet]
-        public HttpResponseMessage All(string nickname, string sessionKey)
+        public HttpResponseMessage All()
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var results = this.Repository.All().Select(RecepiePhaseModel.FromDbModel);
-                return Request.CreateResponse(HttpStatusCode.OK, results);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
+            var results = this.Repository.All().Select(RecepiePhaseModel.FromDbModel);
+            return Request.CreateResponse(HttpStatusCode.OK, results);
         }
 
         [HttpGet]
-        public HttpResponseMessage ByRecepie(int recepieId, string nickname, string sessionKey)
+        public HttpResponseMessage ByRecepie(int recepieId)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var results = this.Repository.All().Where(p => p.RecepieId == recepieId).Select(RecepiePhaseModel.FromDbModel);
-                return Request.CreateResponse(HttpStatusCode.OK, results);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
+            var results = this.Repository.All().Where(p => p.RecepieId == recepieId).Select(RecepiePhaseModel.FromDbModel);
+            return Request.CreateResponse(HttpStatusCode.OK, results);
         }
 
         [HttpGet]
-        public HttpResponseMessage Select(int id, string nickname, string sessionKey)
+        public HttpResponseMessage Select(int id)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var phase = this.Repository.All().Select(RecepiePhaseModel.FromDbModel).FirstOrDefault(t => t.Id == id);
-                return Request.CreateResponse(HttpStatusCode.OK, phase);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
+            var phase = this.Repository.All().Select(RecepiePhaseModel.FromDbModel).FirstOrDefault(t => t.Id == id);
+            return Request.CreateResponse(HttpStatusCode.OK, phase);
         }
 
         [HttpPost]
@@ -74,6 +42,17 @@ namespace RecepiesApp.Services.Controllers
             KeyValuePair<HttpStatusCode, string> messageIfUserError;
             if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
             {
+                var recepie = this.Data.Recepies.All().FirstOrDefault(r=>r.Id == value.RecepieId);
+
+                if (recepie == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No such recepie was found");
+                }
+                if (recepie.UserInfo.Nickname != nickname)
+                {
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, "A user can only add phases to his/her own recepie");
+                }
+
                 this.Repository.Add(value);
                 this.Repository.SaveChanges();
                 return Request.CreateResponse(HttpStatusCode.OK);
@@ -93,6 +72,11 @@ namespace RecepiesApp.Services.Controllers
                 var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
                 if (item != null)
                 {
+                    if (item.Recepie.UserInfo.Nickname != nickname)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.Forbidden, "A user can only edit phases of his/her own recepie");
+                    }
+
                     item.IsImportnt = value.IsImportnt;
                     item.Minutes = value.Minutes;
                     item.Name = value.Name;
@@ -121,6 +105,11 @@ namespace RecepiesApp.Services.Controllers
                 var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
                 if (item != null)
                 {
+                    if (item.Recepie.UserInfo.Nickname != nickname)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.Forbidden, "A user can only delete phases of his/her own recepie");
+                    }
+
                     item.IsDeleted = true;
                     this.Repository.SaveChanges();
                     return Request.CreateResponse(HttpStatusCode.OK);
@@ -135,12 +124,19 @@ namespace RecepiesApp.Services.Controllers
                 return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
             }
         }
-
-        public Data.Repository.IRepository<RecepiePhase> Repository
+        
+        private IRepository<RecepiePhase> Repository
         {
             get 
             {
-                return repository;
+                return UnitOfWorkHandler.Data.RecepiePhases;
+            }
+        }
+        private IRecepiesData Data
+        {
+            get 
+            {
+                return UnitOfWorkHandler.Data;
             }
         }
     }

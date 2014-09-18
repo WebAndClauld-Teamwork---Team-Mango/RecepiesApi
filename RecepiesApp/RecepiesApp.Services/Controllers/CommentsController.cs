@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using RecepiesApp.Data;
 using RecepiesApp.Data.Repository;
 using RecepiesApp.Models;
 using RecepiesApp.Services.Models;
@@ -11,82 +12,44 @@ using RecepiesApp.Services.Validators;
 
 namespace RecepiesApp.Services.Controllers
 {
-    public class CommentsController : ApiController, IRepositoryHandler<RecepieComment>
-    {
-        public CommentsController() 
-        {
-            if (repository == null)
-            {
-                repository = new Repository<RecepieComment>();
-            }
-        }
-
-        private static IRepository<RecepieComment> repository;
-        
+    public class CommentsController : ApiController
+    { 
         [HttpGet]
         public HttpResponseMessage All()
         {
             var comments = this.Repository.All();
-                
             var results = comments.Select(RecepieCommentModel.FromDbModel);
-
             return Request.CreateResponse(HttpStatusCode.OK, results);
         }
         
         [HttpGet]
-        public HttpResponseMessage ByUser(int userId, string nickname, string sessionKey)
+        public HttpResponseMessage ByUser(int userId)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var comments = this.Repository.All().Where(c => c.UserInfoId == userId);
-                var results = comments.Select(RecepieCommentModel.FromDbModel);
-                return Request.CreateResponse(HttpStatusCode.OK, results);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
+            var comments = this.Repository.All().Where(c => c.UserInfoId == userId);
+            var results = comments.Select(RecepieCommentModel.FromDbModel);
+            return Request.CreateResponse(HttpStatusCode.OK, results);
         }
         
         [HttpGet]
-        public HttpResponseMessage OnRecepie(int recepieId, string nickname, string sessionKey)
+        public HttpResponseMessage OnRecepie(int recepieId)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
-            {
-                var comments = this.Repository.All().Where(c => c.RecepieId == recepieId);
-                var results = comments.Select(RecepieCommentModel.FromDbModel);
-                return Request.CreateResponse(HttpStatusCode.OK, results);
-            }
-            else
-            {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
-            }
-            
+            var comments = this.Repository.All().Where(c => c.RecepieId == recepieId);
+            var results = comments.Select(RecepieCommentModel.FromDbModel);
+            return Request.CreateResponse(HttpStatusCode.OK, results);
         }
 
         [HttpGet]
-        public HttpResponseMessage Select(int id, string nickname, string sessionKey)
+        public HttpResponseMessage Select(int id)
         {
-            KeyValuePair<HttpStatusCode, string> messageIfUserError;
-            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
+            var cpmment = this.Repository.All().Select(RecepieCommentModel.FromDbModel).FirstOrDefault(rc => rc.Id == id);
+            if (cpmment != null)
             {
-                var cpmment = this.Repository.All().Select(RecepieCommentModel.FromDbModel).FirstOrDefault(rc => rc.Id == id);
-                if (cpmment != null)
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, cpmment);
-                }
-                else
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The comment was not found");
-                }
+                return Request.CreateResponse(HttpStatusCode.OK, cpmment);
             }
             else
             {
-                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The comment was not found");
             }
-            
         }
 
         [HttpPost]
@@ -95,6 +58,17 @@ namespace RecepiesApp.Services.Controllers
             KeyValuePair<HttpStatusCode, string> messageIfUserError;
             if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
             {
+                var user = this.Data.UserInfos.All().FirstOrDefault(u=>u.Id == value.UserInfoId);
+                if (user == null || user.Nickname != nickname)
+                {
+                    return Request.CreateResponse(HttpStatusCode.Forbidden, "A user can only post his/her own comments");
+                }
+                
+                if (this.Data.UserInfos.All().FirstOrDefault(u=>u.Id == value.RecepieId) == null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No such recepie");
+                }
+
                 this.Repository.Add(value);
                 this.Repository.SaveChanges();
                 return Request.CreateResponse(HttpStatusCode.OK);
@@ -114,10 +88,12 @@ namespace RecepiesApp.Services.Controllers
                 var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
                 if (item != null)
                 {
+                    if (item.UserInfo.Nickname != nickname)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.Forbidden, "A user can only edit his/her own comments");
+                    }
+
                     item.Content = value.Content;
-                    item.Date = value.Date;
-                    item.RecepieId = value.RecepieId;
-                    item.UserInfoId = value.UserInfoId;
 
                     this.Repository.SaveChanges();
                     return Request.CreateResponse(HttpStatusCode.OK);
@@ -142,6 +118,11 @@ namespace RecepiesApp.Services.Controllers
                 var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
                 if (item != null)
                 {
+                    if (item.UserInfo.Nickname != nickname)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.Forbidden, "A user can only delete his/her own comments");
+                    }
+
                     item.IsDeleted = true;
                     this.Repository.SaveChanges();
                     return Request.CreateResponse(HttpStatusCode.OK);
@@ -157,11 +138,18 @@ namespace RecepiesApp.Services.Controllers
             }
         }
 
-        public Data.Repository.IRepository<RecepieComment> Repository
+        private IRepository<RecepieComment> Repository
         {
             get 
             {
-                return repository;
+                return UnitOfWorkHandler.Data.RecepieComments;
+            }
+        }
+        private IRecepiesData Data
+        {
+            get 
+            {
+                return UnitOfWorkHandler.Data;
             }
         }
     }

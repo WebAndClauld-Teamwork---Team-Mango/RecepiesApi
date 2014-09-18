@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using RecepiesApp.Data;
 using RecepiesApp.Data.Repository;
 using RecepiesApp.Models;
 using RecepiesApp.Services.Models;
@@ -12,27 +13,14 @@ using RecepiesApp.Services.Validators;
 
 namespace RecepiesApp.Services.Controllers
 {
-    public class UserInfoController : ApiController, IRepositoryHandler<UserInfo>
+    public class UserInfoController : ApiController
     {
-        public UserInfoController() 
-        {
-            if (repository == null)
-            {
-                repository = new Repository<UserInfo>();
-            }
-        }
-
-        private static IRepository<UserInfo> repository;
-        
         [HttpGet]
         public HttpResponseMessage All()
         {
             var users = this.Repository.All();
-                
             var results = users.Select(UserInfoLightModel.FromDbModel);
-                
             results = results.OrderBy(user => user.Nickname);
-
             return Request.CreateResponse(HttpStatusCode.OK, results);
         }
         
@@ -46,7 +34,7 @@ namespace RecepiesApp.Services.Controllers
                 {
                     Id = user.Id,
                     Description = user.Description,
-                    Nickname = user.Description,
+                    Nickname = user.Nickname,
                     PictureUrl = user.PictureUrl,
                     FavouriteRecepies = user.FavouriteRecepies
                         .Select(f => f.Recepie)
@@ -75,12 +63,10 @@ namespace RecepiesApp.Services.Controllers
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The user name is already taken");
             }
-            
             if (!value.AuthCode.StartsWith(value.Nickname))
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid AuthCode");
             }
-
             if (value.AuthCode.Length - 6 < value.Nickname.Length)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "The password is not long enough. Minimum 6 symbols");
@@ -185,11 +171,18 @@ namespace RecepiesApp.Services.Controllers
             }
         }
 
-        public IRepository<UserInfo> Repository
+        private IRepository<UserInfo> Repository
         {
             get 
             {
-                return repository;
+                return UnitOfWorkHandler.Data.UserInfos;
+            }
+        }
+        private IRecepiesData Data
+        {
+            get 
+            {
+                return UnitOfWorkHandler.Data;
             }
         }
     }

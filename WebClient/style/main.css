@@ -33,7 +33,7 @@ aside ul {
     margin: 0;
     padding: 0;
     list-style: none;
-    width: 175px;
+    width: 175px;    
 }
 aside ul li {
     margin: 0;
@@ -43,6 +43,7 @@ aside ul li button {
     width: 80%;
     cursor: pointer;
     height: 35px;
+    font-size: 11px;
     margin: 10px 0 0 20px;
 }
 
@@ -56,7 +57,7 @@ section {
 }
 
 section #breadcrumbs-box {
-    width: 590px;
+    width: 540px;
     border: 1px solid #000;
     float: left;
     padding: 5px;
@@ -64,12 +65,16 @@ section #breadcrumbs-box {
     margin-left: 10px;
 }
 
-section #tb-search {
+section #tb-search,#search-submit {
     border: 1px solid #000;
     float: left;
     padding: 6px;
     margin: 10px 0 0 14px;
     height: 23px;
+}
+
+section #search-submit {
+    height: 37px;
 }
 
 #content-box {
@@ -180,3 +185,44 @@ footer {
 
 
 /*RECIPE END*/
+
+/* USER PAGE */
+#user-box {
+    width: 950px;
+    padding: 20px;
+}
+#user-box .user-avatar {
+    margin: 0 20px 0 0px;
+    float:left;
+}
+
+#user-box .user-recipe {
+    background: lightgray;
+    padding: 15px;
+    margin: 15px;
+}
+
+#user-box .small-image {
+    width: 140px;
+    display: block;
+    margin: 10px auto;
+}
+
+#user-box #favourites-container {
+    float: left;
+    border: 1px solid #000;
+    padding: 10px;
+}
+
+#user-box #favourites-container ul li {
+    padding: 5px;
+    background: lightgray;
+    margin-top: 10px;
+}
+
+#user-box #user-recipes-container {
+    float: left;
+    width: 700px;
+}
+
+/* USER PAGE END */

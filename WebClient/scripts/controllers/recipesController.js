@@ -30,6 +30,29 @@ define(['jquery', 'requestModule','fileHelper','handlebars','constants'], functi
                 //
             },
 
+            generateUsersList: function(data){
+                
+                function fillUsersList(template)
+                {
+                    var usersListContainer = $("#users-list");
+                    var generateUsersList= Handlebars.compile(template);
+                    //   
+                    usersListContainer.children().remove();
+                    //
+                    usersListContainer.html(generateUsersList(data));
+                }
+                //
+                //create file helper
+                var fileHelper=new FileHelper();
+                //read tags list template
+                fileHelper.loadTextFile(USERS_LIST_TEMPLATE,function(result){
+                    fillUsersList(result);
+                },function(error){
+                    //report error here...
+                    console.log(error);
+                });                
+            },
+
             loadUI: function (selector) {                
 
                 //load recipes here...

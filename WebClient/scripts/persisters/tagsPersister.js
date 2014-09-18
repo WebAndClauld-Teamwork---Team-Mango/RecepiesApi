@@ -5,7 +5,7 @@ define(['jquery','restHelper'/*dependencies*/], function ($,RESThelper) {
         	this.endpoint=endpoint;
         	
         	function loadAllTags(onSuccess,onFail){
-        		var url=this.endpoint+'/all';
+        		var url=this.endpoint+'/all/?nickname=IAmCheater&sessionKey=IndeedIAm';
         		this.rest.getJSON(url,function(data){
 	        		//call user function
 	    			if(onSuccess!==undefined){

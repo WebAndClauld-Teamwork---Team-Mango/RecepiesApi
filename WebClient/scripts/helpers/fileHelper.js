@@ -7,8 +7,8 @@ define(['jquery'], function ($) {
                 url : filename,
                 dataType: "text",
                 success : onSuccess,
-                error:onError
-            });
+                error: onError
+            });    
         }
         
         return {
