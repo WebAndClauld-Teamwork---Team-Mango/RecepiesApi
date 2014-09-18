@@ -96,11 +96,21 @@ section .recipe-thumbnail-box .time-consuming {
     border: 1px solid gray;
 }
 
+section .recipe-thumbnail-box *
+{
+    max-width: 230px;
+}
+
+section .recipe-thumbnail-box p
+{
+    overflow: auto;
+}
+
 section .recipe-thumbnail-box .btn-details {
+    //
     width: 50%;
     height: 40px;
     margin: 0 0 0 35px;
-
 }
 
 
