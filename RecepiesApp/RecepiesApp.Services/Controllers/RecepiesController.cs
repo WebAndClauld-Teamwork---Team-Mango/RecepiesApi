@@ -74,6 +74,29 @@ namespace RecepiesApp.Services.Controllers
 	        }
         }
 
+        
+        // GET api/recepies/minutes/5
+        [HttpGet]
+        public HttpResponseMessage Minutes(int recepieId) 
+        { 
+            var recepies = this.Repository.All();
+            var recepie = recepies.FirstOrDefault(u => u.Id == recepieId);
+            if (recepie != null)
+            {
+                int totalTime = 0;
+                foreach (var phase in recepie.Phases.Select(p => p.Minutes))
+                {
+                    totalTime += phase;
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK, totalTime);
+            }
+            else
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The recepie was not found");
+            }
+        }
+
         // POST api/recepies/add
         [HttpPost]
         public HttpResponseMessage Add([FromBody]

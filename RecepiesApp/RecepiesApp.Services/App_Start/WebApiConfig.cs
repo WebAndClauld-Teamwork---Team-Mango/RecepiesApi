@@ -37,6 +37,7 @@ namespace RecepiesApp.Services
             //DefaultApi + api/recepiephases/byrecepie/{id}
             //DefaultApi + api/favourites/byuser/{id} - returns recepies
             //DefaultApi + api/favourites/byrecepie/{id} - returns users
+            //DefaultApi + api/recepies/minutes/{id} - returns time to prepare (int)
 
             // OTHER
             //Favourites has NO "All" method!
