@@ -48,7 +48,7 @@
             this.get("#/recipe/:id",function(){
                 //get recipe id
                 var recipeId=this.params['id'];  
-                $(contentSelector).load('pages/recipe.html',function(){                                        
+                $(contentSelector).load(RECIPE_PAGE,function(){                                        
                     //get recipe from rest by id
                     console.log(recipeId);
                 });
@@ -56,7 +56,9 @@
 
             //new recipe page
             this.get("#/recipes/new", function() {
-                alert("new bace");         
+                $(contentSelector).load(INSERT_RECIPE_PAGE,function(){                                        
+                    //get recipe from rest by id                    
+                });       
             });
             
             //about page
