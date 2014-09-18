@@ -11,6 +11,10 @@
 			{{/with}}
 			{{/Tags}}
 		</div>
+	</aside>
+	<article>
+		<h3>{{Name}}</h3>
+		<p id="recipe-text">{{Description}}</p>
 		<ol><strong>Cooking Steps:</strong>
 		{{#RecepiePhases}}
 		{{#with this}}
@@ -18,10 +22,6 @@
 		{{/with}}
 		{{/RecepiePhases}}
 		</ol>
-	</aside>
-	<article>
-		<h3>{{Name}}</h3>
-		<p id="recipe-text">{{Description}}</p>
 		<button>Add to Favourites</button>
 		<button>Share on Facebook</button>
 		<button>Share on Twitter</button>
@@ -30,11 +30,12 @@
 	</article>
 	<div style="clear: both;">&nbsp;</div>
 	<section>
-		<ol><h4 style="margin-left: 10px;">Recipe Comments: </h4>
+		<h4 style="margin-left: 10px;">Recipe Comments: </h4>
+		<ol>
 		{{#Comments}}
 		{{#with this}}
-		<li>
-		<div class="comment-box">
+		<li class="comment-box">
+		<div>
 			<header> [<a href="#">{{Nickname}}</a>] {{Date}}</header>
 			<p>{{Content}}</p>
 			<p><a href="#">Цитирай</a> | <a href="#">Докладвай!</a> | <a href="#">Редактирай </a> | <a href="#">Изтрий!</a></p>

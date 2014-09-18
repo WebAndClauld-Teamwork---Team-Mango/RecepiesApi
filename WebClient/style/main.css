@@ -134,6 +134,11 @@ footer {
     padding-bottom: 10px;
 }
 
+#content-box p
+{
+    overflow: auto;
+}
+
 #content-box aside {
     width: 230px;
     border: 1px solid #000;
@@ -148,12 +153,17 @@ footer {
     padding: 10px 10px;
 }
 
+#content-box aside img
+{
+    max-width: 230px;
+}
+
 #content-box section {
     margin: 0;
     border: none;
 }
 #content-box section .comment-box {
-    width: 775px;
+    width: 737px;
     border: 1px solid #000;
     margin: 10px;
     padding: 10px 10px 0 10px ;
