@@ -23,22 +23,14 @@
 
     require(['recipesPersister','recipesController','sammy','recipe'], function (RecipesPersister,RecipesController,sammy,Recipe) {
 
-        //define endpoints
-        var rootUrl='http://localhost:1937/api/';    
-        var recipesEndpoint = rootUrl+'recepies';
-        var container='#content-box';
+        //main content container
+        var contentSelector='#content-box';
 
-        //var theController = new mainController(rootUrl);
-        //theController.loadUI('#content-box');
-        //var recipesController=new RecipesController(recipesEndpoint);
-        //recipesController.loadUI();
+        var app = sammy(contentSelector, function() {
 
-        //sammy here
-        var app = sammy(container, function() {
-
-            //home page is here
+            //recepies page
             this.get("#/recipes", function() { 
-                var recipeController=new RecipesController(recipesEndpoint);
+                var recepiesController=new RecipesController(RECEPIES_ENDPOINT);
                 //template test
                 var recepies=[];
                 for(var i=0;i<10;i++){
@@ -46,27 +38,31 @@
                     recepies.push(new Recipe(i,'recipe '+i,'recipe desc'+i,'images/thumbnails/food-image-1.jpg',time));
                 }
                 //
-                //var recipesPersister=new RecipesPersister(recipesEndpoint);
-                //recipesPersister.loadAllRecepies();
-                //data
                 var data={
                     'recepies':recepies
                 };
-                //console.log(data);
-                var recipesController=new RecipesController(recipesEndpoint);    
                 //
-                recipesController.generateThumbnails(data);
+                recepiesController.generateThumbnails(data);
             });
 
-            //recipes page
+            this.get("#/recipe/:id",function(){
+                //get recipe id
+                var recipeId=this.params['id'];  
+                $(contentSelector).load('pages/recipe.html',function(){                                        
+                    //get recipe from rest by id
+                    console.log(recipeId);
+                });
+            });
+
+            //new recipe page
             this.get("#/recipes/new", function() {
                 alert("new bace");         
             });
             
-            //about page is here
+            //about page
             this.get("#/about",function(){
                 alert("about!!!");
-                //$("#content").load(PAGES_URL+'document.html',function(){               
+                //              
             });                                            
         });
         //run application

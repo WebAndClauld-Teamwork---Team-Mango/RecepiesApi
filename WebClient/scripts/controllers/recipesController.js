@@ -7,25 +7,27 @@ define(['jquery', 'requestModule','fileHelper','handlebars','constants'], functi
         RecipesController.prototype = {
             
             generateThumbnails:function(data)
-            {				
+            {				                                
+                function fillContentBoxWithRecipes(template)
+                {
+                    var recipesListContainer = $("#content-box");
+                    var generateRecipes = Handlebars.compile(template);
+                    // empty the container
+                    recipesListContainer.children().remove();
+                    //fill container with recepies
+                    recipesListContainer.html(generateRecipes(data));
+                }
+
                 //create file helper
                 var fileHelper=new FileHelper();
-                //read recipes template
+                //read recipes template and fill recipes
                 fileHelper.loadTextFile(RECEPIES_TEMPLATE,function(result){
-                    console.log(result);
+                    fillContentBoxWithRecipes(result);
                 },function(error){
                     //report error here...
                     console.log(error);
                 });                
                 //
-                var recipesListContainer = $("#content-box");
-				var generateRecipes = Handlebars.compile($('#recipes-template').html());
-				// empty the container
-				while (recipesListContainer.firstChild) {
-					recipesListContainer.removeChild(recipesListContainer.firstChild);
-				}
-				
-				recipesListContainer.html(generateRecipes(data));
             },
 
             loadUI: function (selector) {                
