@@ -23,6 +23,7 @@
 
         public void Add(T entity)
         {
+            entity.IsDeleted = false;
             this.ChangeEntityState(entity, EntityState.Added);
         }
         
