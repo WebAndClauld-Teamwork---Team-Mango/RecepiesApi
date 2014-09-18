@@ -28,22 +28,22 @@ namespace RecepiesApp.Services
             config.AddODataQueryFilter();
 
             // MAIN ROUTES:
-            //DefaultApi + api/{controller}/all
-            //DefaultApi + api/{controller}/select/{id}
-            //DefaultApi + api/{controller}/add (+ objectToAdd in body)
-            //DefaultApi + api/{controller}/edit/{id} (+ editedObject in body)
-            //DefaultApi + api/{controller}/delete/{id}
+            //DefaultApi + api/{controller}/all?nickname={nickname}&sessionKey={sessionKey}
+            //DefaultApi + api/{controller}/select?id={id}&nickname={nickname}&sessionKey={sessionKey}
+            //DefaultApi + api/{controller}/add?nickname={nickname}&sessionKey={sessionKey} (+ objectToAdd in body)
+            //DefaultApi + api/{controller}/edit?id={id}&nickname={nickname}&sessionKey={sessionKey} (+ editedObject in body)
+            //DefaultApi + api/{controller}/delete?id={id}&nickname={nickname}&sessionKey={sessionKey}
 
             // CUSTOM ROUTES:
-            //DefaultApi + api/çomments/byuser/{id}
-            //DefaultApi + api/çomments/onrecepie/{id}
-            //DefaultApi + api/recepiephases/byrecepie/{id}
-            //DefaultApi + api/favourites/byuser/{id} - returns recepies
-            //DefaultApi + api/favourites/byrecepie/{id} - returns users
-            //DefaultApi + api/recepies/minutes/{id} - returns time to prepare (int)
-            //DefaultApi + api/userinfo/register
-            //DefaultApi + api/userinfo/login
-            //DefaultApi + api/userinfo/logout
+            //DefaultApi + api/çomments/byuser?id={id}&nickname={nickname}&sessionKey={sessionKey}
+            //DefaultApi + api/çomments/onrecepie?id={id}&nickname={nickname}&sessionKey={sessionKey}
+            //DefaultApi + api/recepiephases/byrecepie?id={id}&nickname={nickname}&sessionKey={sessionKey}
+            //DefaultApi + api/favourites/byuser?id={id}&nickname={nickname}&sessionKey={sessionKey} - returns recepies
+            //DefaultApi + api/favourites/byrecepie?id={id}&nickname={nickname}&sessionKey={sessionKey} - returns users
+            //DefaultApi + api/recepies/minutes?id={id}&nickname={nickname}&sessionKey={sessionKey} - returns time to prepare (int)
+            //DefaultApi + api/userinfo/register(+ UserObject in body)
+            //DefaultApi + api/userinfo/login(+ UserObject in body)
+            //DefaultApi + api/userinfo/logout?nickname={nickname}&sessionKey={sessionKey}
 
             // OTHER
             //Favourites has NO "All" method!

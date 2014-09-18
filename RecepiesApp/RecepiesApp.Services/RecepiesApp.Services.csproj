@@ -225,7 +225,6 @@
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\FavouritesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\IRepositoryHandler.cs" />
     <Compile Include="Controllers\RecepiePhasesController.cs" />
     <Compile Include="Controllers\RecepiesController.cs" />
@@ -249,6 +248,7 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Validators\UserIsLoggedValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

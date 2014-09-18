@@ -19,7 +19,7 @@ namespace RecepiesApp.Services.Models
                 return user => new UserInfoLightModel()
                 {
                     Id = user.Id,
-                    Nickname = user.Description,
+                    Nickname = user.Nickname,
                     PictureUrl = user.PictureUrl
                 };
             }

@@ -8,10 +8,11 @@ using System.Web.Http;
 using RecepiesApp.Data.Repository;
 using RecepiesApp.Models;
 using RecepiesApp.Services.Models;
+using RecepiesApp.Services.Validators;
 
 namespace RecepiesApp.Services.Controllers
 {
-    public class UserInfoController : ApiController, IRepositoryHandler<UserInfo>, IController
+    public class UserInfoController : ApiController, IRepositoryHandler<UserInfo>
     {
         public UserInfoController() 
         {
@@ -118,28 +119,26 @@ namespace RecepiesApp.Services.Controllers
         }
         
         [HttpPut]
-        public HttpResponseMessage Logout([FromBody]UserInfoLoggedModel value)
+        public HttpResponseMessage Logout(string nickname, string sessionKey)
         {
-            var user = this.Repository.All().FirstOrDefault(u =>
-                u.Nickname == value.Nickname);
-            if (user == null)
+            KeyValuePair<HttpStatusCode, string> messageIfUserError;
+            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No such user");
-            }
-            else if(user.SessionKey != value.SessionKey || user.SessionExpirationDate.CompareTo(DateTime.Now) < 0)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Not logged in");
-            }
-            else
-            {
+                var user = this.Repository.All().FirstOrDefault(u =>
+                u.Nickname == nickname);
                 user.SessionKey = "";
                 user.SessionExpirationDate = DateTime.Now.AddDays(-1);
                 return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            else
+            {
+                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
             }
         }
 
         // POST api/userinfo
         [HttpPost]
+        [Authorize(Roles="Admin")]
         public HttpResponseMessage Add([FromBody]UserInfo value)
         {
             this.Repository.Add(value);
@@ -149,6 +148,7 @@ namespace RecepiesApp.Services.Controllers
 
         // PUT api/userinfo/5
         [HttpPut]
+        [Authorize(Roles="Admin")]
         public HttpResponseMessage Edit(int id, [FromBody]UserInfoModel value)
         {
             var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
@@ -169,6 +169,7 @@ namespace RecepiesApp.Services.Controllers
 
         // DELETE api/userinfo/5
         [HttpDelete]
+        [Authorize(Roles="Admin")]
         public HttpResponseMessage Delete(int id)
         {
             var user = this.Repository.All().FirstOrDefault(u => u.Id == id);

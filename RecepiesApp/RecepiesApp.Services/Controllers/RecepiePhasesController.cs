@@ -7,10 +7,11 @@ using System.Web.Http;
 using RecepiesApp.Data.Repository;
 using RecepiesApp.Models;
 using RecepiesApp.Services.Models;
+using RecepiesApp.Services.Validators;
 
 namespace RecepiesApp.Services.Controllers
 {
-    public class RecepiePhasesController  : ApiController, IRepositoryHandler<RecepiePhase>, IController
+    public class RecepiePhasesController  : ApiController, IRepositoryHandler<RecepiePhase>
     {
         public RecepiePhasesController() 
         {
@@ -23,68 +24,115 @@ namespace RecepiesApp.Services.Controllers
         private static IRepository<RecepiePhase> repository;
         
         [HttpGet]
-        public HttpResponseMessage All()
+        public HttpResponseMessage All(string nickname, string sessionKey)
         {
-            var results = this.Repository.All().Select(RecepiePhaseModel.FromDbModel);
-            return Request.CreateResponse(HttpStatusCode.OK, results);
+            KeyValuePair<HttpStatusCode, string> messageIfUserError;
+            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
+            {
+                var results = this.Repository.All().Select(RecepiePhaseModel.FromDbModel);
+                return Request.CreateResponse(HttpStatusCode.OK, results);
+            }
+            else
+            {
+                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
+            }
         }
 
         [HttpGet]
-        public HttpResponseMessage ByRecepie(int recepieId)
+        public HttpResponseMessage ByRecepie(int recepieId, string nickname, string sessionKey)
         {
-            var results = this.Repository.All().Where(p => p.RecepieId == recepieId).Select(RecepiePhaseModel.FromDbModel);
-            return Request.CreateResponse(HttpStatusCode.OK, results);
+            KeyValuePair<HttpStatusCode, string> messageIfUserError;
+            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
+            {
+                var results = this.Repository.All().Where(p => p.RecepieId == recepieId).Select(RecepiePhaseModel.FromDbModel);
+                return Request.CreateResponse(HttpStatusCode.OK, results);
+            }
+            else
+            {
+                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
+            }
         }
 
         [HttpGet]
-        public HttpResponseMessage Select(int id)
+        public HttpResponseMessage Select(int id, string nickname, string sessionKey)
         {
-            var phase = this.Repository.All().Select(RecepiePhaseModel.FromDbModel).FirstOrDefault(t => t.Id == id);
-            
-            return Request.CreateResponse(HttpStatusCode.OK, phase);
+            KeyValuePair<HttpStatusCode, string> messageIfUserError;
+            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
+            {
+                var phase = this.Repository.All().Select(RecepiePhaseModel.FromDbModel).FirstOrDefault(t => t.Id == id);
+                return Request.CreateResponse(HttpStatusCode.OK, phase);
+            }
+            else
+            {
+                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
+            }
         }
 
         [HttpPost]
-        public HttpResponseMessage Add([FromBody]RecepiePhase value)
+        public HttpResponseMessage Add([FromBody]RecepiePhase value, string nickname, string sessionKey)
         {
-            this.Repository.Add(value);
-            this.Repository.SaveChanges();
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        [HttpPut]
-        public HttpResponseMessage Edit(int id, [FromBody]RecepiePhaseModel value)
-        {
-            var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
-            if (item != null)
+            KeyValuePair<HttpStatusCode, string> messageIfUserError;
+            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
             {
-                item.IsImportnt = value.IsImportnt;
-                item.Minutes = value.Minutes;
-                item.Name = value.Name;
-                item.NumberOfPhase = value.NumberOfPhase;
-
+                this.Repository.Add(value);
                 this.Repository.SaveChanges();
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             else
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The phase was not found");
+                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
+            }
+        }
+
+        [HttpPut]
+        public HttpResponseMessage Edit(int id, [FromBody]RecepiePhaseModel value, string nickname, string sessionKey)
+        {
+            KeyValuePair<HttpStatusCode, string> messageIfUserError;
+            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
+            {
+                var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
+                if (item != null)
+                {
+                    item.IsImportnt = value.IsImportnt;
+                    item.Minutes = value.Minutes;
+                    item.Name = value.Name;
+                    item.NumberOfPhase = value.NumberOfPhase;
+
+                    this.Repository.SaveChanges();
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The phase was not found");
+                }
+            }
+            else
+            {
+                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
             }
         }
 
         [HttpDelete]
-        public HttpResponseMessage Delete(int id)
+        public HttpResponseMessage Delete(int id, string nickname, string sessionKey)
         {
-            var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
-            if (item != null)
+            KeyValuePair<HttpStatusCode, string> messageIfUserError;
+            if (new UserIsLoggedValidator().UserIsLogged(nickname, sessionKey, out messageIfUserError))
             {
-                item.IsDeleted = true;
-                this.Repository.SaveChanges();
-                return Request.CreateResponse(HttpStatusCode.OK);
+                var item = this.Repository.All().FirstOrDefault(u => u.Id == id);
+                if (item != null)
+                {
+                    item.IsDeleted = true;
+                    this.Repository.SaveChanges();
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The phase was not found");
+                }
             }
             else
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The phase was not found");
+                return Request.CreateResponse(messageIfUserError.Key, messageIfUserError.Value);
             }
         }
 
