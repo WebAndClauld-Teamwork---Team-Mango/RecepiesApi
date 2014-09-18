@@ -7,6 +7,7 @@ using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Web.OData.Extensions;
+using System.Web.Http.Cors;
 
 namespace RecepiesApp.Services
 {
@@ -21,7 +22,7 @@ namespace RecepiesApp.Services
 
             // Web API routes
             config.MapHttpAttributeRoutes();
-            config.EnableCors();
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
             config.AddODataQueryFilter();
 
             // MAIN ROUTES:
