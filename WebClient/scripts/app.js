@@ -35,6 +35,7 @@
         'recipesController',
         'sammy',
         'recipe','libs/underscore',
+        'handlebars',
         'constants'], 
         function (RecepiesPersister,UsersPersister,RecipesController,sammy,Recipe) {
         //enable cors for app
@@ -42,7 +43,21 @@
         
         //main content containers
         var pageContent='#page-content';
-        var contentSelector='#content-box';
+        var contentSelector='#content-box';		
+		
+		function createBreadCrum(name,href){
+			return {
+				'Name':name,
+				'href':href
+			};
+		}
+		
+        function buildBreadCrums(breadcrums){
+			var recepiesController=new RecipesController(RECEPIES_ENDPOINT);
+			//
+			var data={'breadCrums':breadcrums};
+			recepiesController.generateBreadCrums(data);			
+        }
 
         function loadUsers(onSuccess,onFail){
             var usersPersister=new UsersPersister(USERS_ENDPOINT);
@@ -73,27 +88,32 @@
                 recepiesPersister.loadAllRecepies(function(results){
                     var readyResults=results;
                     //
+					var breadCrums=[];
+					
                     if(filterObj!==undefined)
                     {
                         //user filter
                         if(filterObj.userId!==undefined){
                             readyResults=_.filter(results,function(result){return(result.UserInfoId+''===''+filterObj.userId)});
+							breadCrums.push(createBreadCrum('user/'+filterObj.userId,'#/recipes/user/'+filterObj.userId));
                         }
                         //search filter
                         if(filterObj.filterQuery!==undefined){
                             readyResults=_.filter(results,function(result){     
-                            var queryStr=filterObj.filterQuery;
-                            var nameCond=result.Name.indexOf(queryStr)>-1;
-                            var userCond=result.Nickname.indexOf(queryStr)>-1;
-                            var descCond=result.Description.indexOf(queryStr)>-1;
-                            return (nameCond || userCond || descCond);
-                        });   
+								var queryStr=filterObj.filterQuery;
+								var nameCond=result.Name.indexOf(queryStr)>-1;
+								var userCond=result.Nickname.indexOf(queryStr)>-1;
+								var descCond=result.Description.indexOf(queryStr)>-1;
+								return (nameCond || userCond || descCond);
+							}); 
+							//
+							breadCrums.push(createBreadCrum('search for: '+filterObj.filterQuery,'#/recipes/filter/'+filterObj.filterQuery));						
                         }
-
                     }         
                     //
                     var data={'recepies':readyResults};           
-                    recepiesController.generateThumbnails(data);           
+                    recepiesController.generateThumbnails(data);      
+					buildBreadCrums(breadCrums);	
                 });
             }); 
         }
@@ -153,7 +173,11 @@
                         //                              
                         var recipesController=new RecipesController(RECEPIES_ENDPOINT);
                         recipesController.generateUsersList({'users':users});
-                        recipesController.generateSingleRecipe(recipeObj);                       
+                        recipesController.generateSingleRecipe(recipeObj);
+						//deal with breadCrums     
+						var breadcrums=[];
+						breadcrums.push(createBreadCrum('recipe/'+recipeId,'#/recipe/'+recipeId));
+						buildBreadCrums(breadcrums);
                     });
                 }
 
@@ -167,6 +191,19 @@
                         //report errors here
                         console.log(error);
                     });                
+                });
+            });
+            
+            //login or register
+            this.get("#/login",function(){
+                loadUsers(function(users){
+                    var recipesController=new RecipesController(RECEPIES_ENDPOINT);
+                    //
+                    recipesController.generateUsersList({'users':users});
+
+                    $(contentSelector).load(LOGIN_REGISTER_PAGE,function(){
+
+                    });
                 });
             });
 
@@ -194,7 +231,7 @@
             var queryStr=$('#tb-search').val();
             if((queryStr+'').length>0)
             {
-                window.location.href='#/recipes/filter/'+queryStr;
+                window.location.href='#/recipes/filter/'+escape(queryStr);
             }
             else
             {

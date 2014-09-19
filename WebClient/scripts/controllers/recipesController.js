@@ -30,6 +30,25 @@ define(['jquery', 'requestModule','fileHelper','handlebars','constants'], functi
                 //
             },
 
+			generateBreadCrums:function(breadcrums)
+			{
+				function fillBreadCrumsContainer(template){
+					var breadcrumsBox=$('#breadcrumbs-box');
+					//
+					var generateBreadCrums=Handlebars.compile(template);
+					breadcrumsBox.children().remove();
+					breadcrumsBox.html(generateBreadCrums(breadcrums));
+				}
+				
+				var fileHelper=new FileHelper();
+				fileHelper.loadTextFile(BREADCRUMS_TEMPLATE,function(result){
+					fillBreadCrumsContainer(result);
+				},function(errors){
+					//report errors here
+					console.log(errors);
+				});
+			},
+			
             generateSingleUser:function(data){
                 //
                 function fillContentBoxWithUserInfo(template){
