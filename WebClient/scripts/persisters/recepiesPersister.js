@@ -6,7 +6,7 @@ define(['jquery','restHelper'/*dependencies*/], function ($,RESThelper) {
 	        
         	function loadRecipe(id,onSuccess,onFail)
         	{        		
-        		var url=endpoint+"/select/?id="+id+"&nickname=IAmCheater&sessionKey=IndeedIAm";        		
+        		var url=endpoint+"/select/?id="+id;        		
         		//
         		this.rest.getJSON(url,function(data){
         			if(onSuccess!==undefined){
@@ -20,7 +20,7 @@ define(['jquery','restHelper'/*dependencies*/], function ($,RESThelper) {
         	}        	
 
 	        function loadAllRecepies(onSuccess,onFail){
-	        	var url=endpoint+'/all/?nickname=IAmCheater&sessionKey=IndeedIAm';
+	        	var url=endpoint+'/all';
 	        	this.rest.getJSON(url,function(data){
 	        		if(onSuccess!==undefined){
 	        			onSuccess(data);

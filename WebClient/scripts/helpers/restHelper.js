@@ -23,16 +23,30 @@ define(['jquery'], function ($) {
             })
         }
         
-        function postJSON(url,data)
-        {
-            var rtype='post';
-            return doAJAXRequest(rtype,url,data,'application/json');
+        function postJSON(url,header,data,success, error)
+        {           
+			$.ajax({
+                url: url,
+                type: 'POST',
+				data:data,
+                contentType: header,
+                timeout: 10000,
+                success: success,
+                error: error
+            })
         }
         
-        function putJSON(url,data)
+        function putJSON(url,header,data,success, error)
         {
-            var rtype='put';
-            return doAJAXRequest(rtype,url,data,'application/json');
+			$.ajax({
+                url: url,
+                type: 'PUT',
+				data:data,
+                contentType: header,
+                timeout: 10000,
+                success: success,
+                error: error
+            })
         }
         
         function deleteJSON(url,data)

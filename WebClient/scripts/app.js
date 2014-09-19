@@ -77,6 +77,23 @@
 			$(pageContent).show();
 		}
 		
+		function loginUser(username,sessionKey)
+		{
+			localStorage.setItem(logedUserKey,JSON.stringify({
+				'Nickname':username,
+				'SessionKey':sessionKey
+			}));
+		}
+
+		function logoutUser(username,password){
+			localStorage.removeItem(logedUserKey);
+		}
+ 		
+		function goHome(){
+			fixLoginBar();
+			window.location.href='#/recipes';
+		}
+		
 		function showBigPagePanel()
 		{
 			fixLoginBar();
@@ -240,9 +257,45 @@
 					//
                     $(bigPageContent).load(LOGIN_REGISTER_PAGE,function(){
 						showBigPagePanel();
+						//
+						$('#login-form').submit(function(){
+							//login procedure here...
+							var usersPersister=new UsersPersister(USERS_ENDPOINT);
+							var $form=$(this);
+							var nickname=$form.find('#nickname-input').first().val();
+							var password=$form.find('#password-input').first().val();
+							//
+							usersPersister.loginUser(nickname,password,function(responce){								
+								//save credentials								
+								loginUser(nickname,responce+'');
+								goHome();
+							});	
+							return false;
+						});
+						//register
+						$('#register-form').submit(function(){							
+							//login procedure here...
+							var usersPersister=new UsersPersister(USERS_ENDPOINT);
+							var $form=$(this);
+							var nickname=$form.find('#nickname-input').first().val();
+							var password=$form.find('#password-input').first().val();
+							//
+							usersPersister.registerUser(nickname,password,function(responce){								
+								loginUser(nickname,responce+'');
+								goHome();							
+							});	
+							
+							return false;
+						});
                     });
                 });
             });
+			
+			this.get("#/logout",function(){
+				//do logout	
+				logoutUser();
+				goHome();
+			});
 
             //new recipe page
             this.get("#/recipes/new", function() {                     

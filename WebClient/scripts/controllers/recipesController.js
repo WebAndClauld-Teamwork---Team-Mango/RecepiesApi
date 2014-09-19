@@ -54,6 +54,7 @@ define(['jquery', 'requestModule','fileHelper','handlebars','constants'], functi
 				//
 				function fillLoginBar(template){
 					var loginBarContainer = $("#login-box");
+					
                     var generateLoginBar = Handlebars.compile(template);
                     // empty the container
                     loginBarContainer.children().remove();
