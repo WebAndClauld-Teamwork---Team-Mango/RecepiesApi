@@ -10,6 +10,8 @@ using RecepiesApp.Data.Repository;
 using RecepiesApp.Models;
 using RecepiesApp.Services.Models;
 using RecepiesApp.Services.Validators;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace RecepiesApp.Services.Controllers
 {
@@ -78,11 +80,46 @@ namespace RecepiesApp.Services.Controllers
                 Nickname = value.Nickname,
                 AuthCode = value.AuthCode,
                 SessionKey = sessionKey,
-                SessionExpirationDate = DateTime.Now.AddDays(1)
+                SessionExpirationDate = DateTime.Now.AddDays(1),
+                PictureUrl = this.GetRandomPictureUrl()
             });
             this.Repository.SaveChanges();
             
             return Request.CreateResponse(HttpStatusCode.OK, sessionKey);
+        }
+
+        private string GetRandomPictureUrl()
+        {
+            string url = "https://api.github.com/repos/WebAndClauld-Teamwork---Team-Mango/RecepiesApi/contents/Avatars";
+            var request = WebRequest.Create(url) as HttpWebRequest;
+            request.ContentType = "application/json";
+            request.Method = "GET";
+
+            request.ContentLength = 0;
+            request.Accept = "*/*";
+            request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-us");
+            request.UserAgent =
+               "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0;" +
+               ".NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; InfoPath.2;" +
+               ".NET CLR 3.5.21022; .NET CLR 3.5.30729; .NET4.0C; .NET4.0E)";
+            request.UseDefaultCredentials = true;
+            request.PreAuthenticate = true;
+            request.AllowAutoRedirect = false;
+
+            WebResponse response = request.GetResponse();
+
+            string responseString;
+            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+            {
+                responseString = reader.ReadToEnd();
+            }
+
+            JArray json = JArray.Parse(responseString);
+            JToken value = json[new Random().Next(json.Count)]["name"];
+
+            string picName = value.Value<string>();
+
+            return "https://raw.githubusercontent.com/WebAndClauld-Teamwork---Team-Mango/RecepiesApi/master/Avatars/" + picName;
         }
 
         [HttpPut]
