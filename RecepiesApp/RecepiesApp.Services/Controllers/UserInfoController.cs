@@ -25,7 +25,7 @@ namespace RecepiesApp.Services.Controllers
             results = results.OrderBy(user => user.Nickname);
             return Request.CreateResponse(HttpStatusCode.OK, results);
         }
-        
+
         [HttpGet]
         public HttpResponseMessage Select(int id)
         {
@@ -52,11 +52,41 @@ namespace RecepiesApp.Services.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             else
-	        {
+            {
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The user was not found");
-	        }
+            }
         }
 
+        [HttpGet]
+        public HttpResponseMessage ByNickname(string nickname)
+        {
+            var user = this.Repository.All().FirstOrDefault(u => u.Nickname == nickname);
+            if (user != null)
+            {
+                var result = new UserInfoModel()
+                {
+                    Id = user.Id,
+                    Description = user.Description,
+                    Nickname = user.Nickname,
+                    PictureUrl = user.PictureUrl,
+                    FavouriteRecepies = user.FavouriteRecepies
+                        .Select(f => f.Recepie)
+                        .Select(RecepieLightModel.FromDbModel.Compile())
+                        .OrderBy(r => r.Name),
+                    Recepies = user.Recepies
+                        .Select(RecepieLightModel.FromDbModel.Compile())
+                            .OrderBy(r => r.Date),
+                    RecepieComments = user.RecepieComments
+                        .Select(RecepieCommentModel.FromDbModel.Compile())
+                        .OrderBy(c => c.Date)
+                };
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            else
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "The user was not found");
+            }
+        }
 
         [HttpPost]
         public HttpResponseMessage Register([FromBody]UserInfoLoginModel value) 
