@@ -49,10 +49,32 @@ define(['jquery', 'requestModule','fileHelper','handlebars','constants'], functi
 				});
 			},
 			
+			generateLoginBar:function(logedInfo){
+			
+				//
+				function fillLoginBar(template){
+					var loginBarContainer = $("#login-box");
+                    var generateLoginBar = Handlebars.compile(template);
+                    // empty the container
+                    loginBarContainer.children().remove();
+                    //fill container with recepies
+                    loginBarContainer.html(generateLoginBar(logedInfo));
+				}
+				//			
+				var fileHelper=new FileHelper();
+				//
+				fileHelper.loadTextFile(LOGIN_BAR_TEMPLATE,function(result){
+					fillLoginBar(result);
+				},function(errors){
+					//report errors here...
+					console.log(errors);
+				});				
+			},
+			
             generateSingleUser:function(data){
                 //
                 function fillContentBoxWithUserInfo(template){
-                    var userInfoContainer = $("#content-box");
+                    var userInfoContainer = $("#dedovia");
                     userInfoContainer.children().remove();
                     //                    
                     var generateUserData = Handlebars.compile(template);

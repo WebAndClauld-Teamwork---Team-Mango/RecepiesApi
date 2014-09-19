@@ -10,6 +10,7 @@ var RECEPIES_TEMPLATE=TEMPLATES_DIR+'recipesTemplate.html';
 var USERS_LIST_TEMPLATE=TEMPLATES_DIR+'usersListTemplate.html';
 var USER_PAGE_TEMPLATE=TEMPLATES_DIR+'userPageTemplate.html';
 var BREADCRUMS_TEMPLATE=TEMPLATES_DIR+'breadCrumsTemplate.html';
+var LOGIN_BAR_TEMPLATE=TEMPLATES_DIR+'loginBarTemplate.html';
 //
 var RECEPIE_TEMPLATE=TEMPLATES_DIR+'recipeTemplate.html';
 var RECIPE_PAGE=PAGES_DIR+'recipe.html';

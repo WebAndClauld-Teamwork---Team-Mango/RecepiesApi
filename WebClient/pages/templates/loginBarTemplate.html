@@ -1,0 +1,10 @@
+{{#if LogedIn}}
+Hello, {{Nickname}} 
+<a href="#/logout">
+	<button>Logout</button>
+</a>
+{{else}}
+	<a href="#/login">
+	<button>login or register</button>
+	</a>
+{{/if}}

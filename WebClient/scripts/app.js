@@ -43,13 +43,45 @@
         
         //main content containers
         var pageContent='#page-content';
-        var contentSelector='#content-box';		
+        var contentSelector='#content-box';	
+		var bigPageContent='#dedovia';
+		//
+		var logedUserKey='logedUser';
 		
 		function createBreadCrum(name,href){
 			return {
 				'Name':name,
 				'href':href
 			};
+		}
+		
+		function fixLoginBar()
+		{
+			var logedUserData=localStorage.getItem(logedUserKey);			
+			var logedCondition=logedUserData!==null;
+			var parsedData=JSON.parse(logedUserData);
+			var logedInfo={
+			'LogedIn':logedCondition,
+			'Id':(logedCondition)?parsedData.Id:'',
+			'Nickname':(logedCondition)?parsedData.Nickname:''
+			};
+			
+			var recipesController=new RecipesController(RECEPIES_ENDPOINT);
+			recipesController.generateLoginBar(logedInfo);
+		}
+		
+		function hideBigPagePanel()
+		{
+			fixLoginBar();
+			$(bigPageContent).hide();
+			$(pageContent).show();
+		}
+		
+		function showBigPagePanel()
+		{
+			fixLoginBar();
+			$(pageContent).hide();
+			$(bigPageContent).show();			
 		}
 		
         function buildBreadCrums(breadcrums){
@@ -122,17 +154,20 @@
 
             //recepies page
             this.get("#/recipes", function() { 
+				hideBigPagePanel();
                 showRecipesPage();
             });
 
             //users filter
             this.get("#/recipes/user/:id",function(){
+				hideBigPagePanel();
                 var userId=this.params['id'];
                 showRecipesPage({'userId':userId});
             });
 
             //search filter
             this.get("#/recipes/filter/:query",function(){
+				hideBigPagePanel();
                 var query=this.params['query'];
                 showRecipesPage({'filterQuery':query});                
             });
@@ -156,6 +191,7 @@
                 usersPersister.loadUser(userId,function(user){
                     var data={'user':user};
                     fillUserInfoPage(data);
+					showBigPagePanel();
                 },function(error){                    
                     //log errors here...
                     console.log(error);
@@ -164,7 +200,8 @@
 
             //show recipe
             this.get("#/recipe/:id",function(){
-                //get recipe id
+                hideBigPagePanel();
+				//get recipe id
                 var recipeId=this.params['id'];
 
                 function loadRecipePage(recipeObj,users)
@@ -200,9 +237,9 @@
                     var recipesController=new RecipesController(RECEPIES_ENDPOINT);
                     //
                     recipesController.generateUsersList({'users':users});
-
-                    $(contentSelector).load(LOGIN_REGISTER_PAGE,function(){
-
+					//
+                    $(bigPageContent).load(LOGIN_REGISTER_PAGE,function(){
+						showBigPagePanel();
                     });
                 });
             });
