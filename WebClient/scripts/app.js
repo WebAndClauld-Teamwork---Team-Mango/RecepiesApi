@@ -6,6 +6,7 @@
             'sammy' : 'libs/sammy-latest.min',
             'handlebars':'libs/handlebars',
             'requestModule' : 'libs/requestModule',            
+			'pubnub':'libs/pubnub',
             //controllers
             'mainController' : 'controllers/mainController',
             'recipesController':'controllers/recipesController',
@@ -34,19 +35,43 @@
         'usersPersister',
         'recipesController',
         'sammy',
-        'recipe','libs/underscore',
+        'recipe','restHelper','libs/underscore',
         'handlebars',
-        'constants'], 
-        function (RecepiesPersister,UsersPersister,RecipesController,sammy,Recipe) {
+        'constants','pubnub'], 
+        function (RecepiesPersister,UsersPersister,RecipesController,sammy,Recipe,RESThelper) {
         //enable cors for app
         $.support.cors=true;
         
+		//
+		var PUBNUB_demo = PUBNUB.init({
+			publish_key: "pub-c-e9356020-7135-4618-b2fc-b9cac8473e7a",
+			subscribe_key: "sub-c-f019d17c-3f3c-11e4-9bf1-02ee2ddab7fe"			
+		});		
+		
+		//console.log(PUBNUB_demo);
+
+		
         //main content containers
         var pageContent='#page-content';
         var contentSelector='#content-box';	
 		var bigPageContent='#dedovia';
 		//
 		var logedUserKey='logedUser';
+						
+		var logedUserss=JSON.parse(localStorage.getItem(logedUserKey));
+		
+		PUBNUB_demo.subscribe({
+		  channel: logedUserss.Nickname,
+		  message: function(m){alert(m)}
+		});
+		
+		
+		function getLogedUser(){
+			var logedUserKey='logedUser';					
+			var logedUserss=JSON.parse(localStorage.getItem(logedUserKey));
+			return logedUserss;
+		}
+		
 		
 		function createBreadCrum(name,href){
 			return {
@@ -215,6 +240,47 @@
                 });
             });
 
+			//add to favourite
+			this.get('#/recipe/addtofavourite/:id',function(){
+				
+				var recipeId=this.params['id'];
+				var logedUser=getLogedUser();
+				
+				function favouriteRecipe(pesho)
+				{
+					var rest=new RESThelper();
+					console.log(pesho);
+					console.log(logedUser);
+					var nicknames=pesho.Nickname;
+					var sessionKeys=logedUser.SessionKey;
+					var id=pesho.Id;
+					var root='http://mango.apphb.com/api/Favourites/';
+					var url=root+'Add/?nickname='+nicknames+'&sessionKey='+sessionKeys;
+					var data={
+						'RecipeId':recipeId,
+						'UserInfoId':id
+					};
+					var shit='application/x-www-form-urlencoded';
+					//
+					rest.postJSON(url,shit,data,function(responce){
+						console.log(responce);
+					},function(errors){
+						console.log(errors);
+					});					
+				}
+				
+				function filterFunc(user)
+				{
+					return(user.Nickname==logedUser.Nickname);
+				}
+				
+				var userPersister=new UsersPersister(USERS_ENDPOINT);
+				userPersister.loadAllUsers(function(users){
+					var logedUser=_.filter(users,filterFunc);
+					favouriteRecipe(logedUser[0]);					
+				});				
+			});
+			
             //show recipe
             this.get("#/recipe/:id",function(){
                 hideBigPagePanel();
@@ -267,7 +333,7 @@
 							//
 							usersPersister.loginUser(nickname,password,function(responce){								
 								//save credentials								
-								loginUser(nickname,responce+'');
+								loginUser(nickname,responce);
 								goHome();
 							});	
 							return false;

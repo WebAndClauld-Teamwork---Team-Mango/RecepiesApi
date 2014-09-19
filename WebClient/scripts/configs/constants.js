@@ -16,3 +16,6 @@ var RECEPIE_TEMPLATE=TEMPLATES_DIR+'recipeTemplate.html';
 var RECIPE_PAGE=PAGES_DIR+'recipe.html';
 var LOGIN_REGISTER_PAGE=PAGES_DIR+'loginRegisterPage.html';
 var INSERT_RECIPE_PAGE=PAGES_DIR+'insertRecipe.html';
+//PUB NUP STUFF
+PUB_KEY = "pub-c-e9356020-7135-4618-b2fc-b9cac8473e7a";
+SUB_KEY = "sub-c-f019d17c-3f3c-11e4-9bf1-02ee2ddab7fe";
